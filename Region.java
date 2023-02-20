@@ -3,12 +3,10 @@ public class Region {
     protected long col;
     protected double deposit;
     protected String owner;
-    protected long rate;
-    Region(long row,long col,long rate){
-        this.row = row;
-        this.col = col;
-        this.deposit = 0;
+    public Region(long _row,long _col){
+        this.row = _row ;
+        this.col = _col ;
         this.owner = null;
-        this.rate=rate;
+        this.deposit = 0;
     }
 }
