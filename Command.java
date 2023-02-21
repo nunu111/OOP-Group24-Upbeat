@@ -40,7 +40,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public long random() {
+    public int random() {
         return 0;
     }
 
@@ -65,12 +65,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public double Direction(Direction dir) {
-        return 0;
-    }
-
-    @Override
-    public void move(double dir) {
+    public void move(Direction dir) {
 
     }
 
@@ -85,7 +80,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public void shoot(double dir) {
+    public void shoot(Direction dir) {
 
     }
 

@@ -15,16 +15,15 @@ public interface AllCommand {
     public long deposit();
     public long interest();
     public long maxdeposit();
-    public long random();
+    public int random();
     public long opponent();
     public long nearby();
     public void done();
     public void relocate();
-    public double Direction(Direction dir);
-    public void move(double dir);
+    public void move(Direction dir);
     public void invest();
     public void collect();
-    public void shoot(double dir);
+    public void shoot(Direction dir);
     public void AssignVariable(String a,double b);
     public double GetVariableValue(String key);
 }
