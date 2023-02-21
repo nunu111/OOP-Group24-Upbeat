@@ -20,7 +20,8 @@ public interface AllCommand {
     public long nearby();
     public void done();
     public void relocate();
-    public double move(Direction dir);
+    public double Direction(Direction dir);
+    public void move(double dir);
     public void invest();
     public void collect();
     public void shoot(double dir);

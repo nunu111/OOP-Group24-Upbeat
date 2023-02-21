@@ -65,8 +65,13 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public double move(Direction dir) {
+    public double Direction(Direction dir) {
         return 0;
+    }
+
+    @Override
+    public void move(double dir) {
+
     }
 
     @Override
