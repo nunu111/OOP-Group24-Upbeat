@@ -10,22 +10,22 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public int currow(Region city_crew) {
+    public int currow() {
         return 0;
     }
 
     @Override
-    public int curcol(Region city_crew) {
+    public int curcol() {
         return 0;
     }
 
     @Override
-    public int budget(Player p) {
+    public int budget() {
         return 0;
     }
 
     @Override
-    public int deposit(Region cur) {
+    public int deposit() {
         return 0;
     }
 
@@ -45,12 +45,12 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public int opponent(Region city_crew) {
+    public int opponent() {
         return 0;
     }
 
     @Override
-    public int nearby(Region city_crew) {
+    public int nearby() {
         return 0;
     }
 
@@ -70,12 +70,12 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public void invest(Region cur) {
+    public void invest() {
 
     }
 
     @Override
-    public void collect(Region cur) {
+    public void collect() {
 
     }
 
