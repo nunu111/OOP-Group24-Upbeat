@@ -1,23 +1,29 @@
 public interface AllCommand {
-    int rows();
-    int cols();
-    int currow(Region city_crew);
-    int curcol(Region city_crew);
-    int budget(Player p);
-    int deposit(Region cur);
-    int interest();
-    int maxdeposit();
-    int random();
-    int opponent(Region city_crew);
-
-    int nearby(Region city_crew);
-
-    void done();
-    void relocate(Region city_crew);
-    void move(String command,Region city_crew);
-    void invest(Region cur);
-    void collect(Region cur);
-    void shoot(String command,Region city_crew);
-    void AssignVariable(String a,double b);
-    int GetVariableValue(String a);
+    enum Direction {
+        up,
+        down,
+        upleft,
+        upright,
+        downleft,
+        downright
+    }
+    public int rows();
+    public int cols();
+    public int currow(Region city_crew);
+    public int curcol(Region city_crew);
+    public int budget(Player p);
+    public int deposit(Region cur);
+    public int interest();
+    public int maxdeposit();
+    public int random();
+    public int opponent(Region city_crew);
+    public int nearby(Region city_crew);
+    public void done();
+    public void relocate();
+    public void move(Direction dir);
+    public void invest(Region cur);
+    public void collect(Region cur);
+    public void shoot(Direction dir);
+    public void AssignVariable(String a,double b);
+    public int GetVariableValue(String key);
 }

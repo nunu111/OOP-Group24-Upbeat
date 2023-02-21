@@ -60,12 +60,12 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public void relocate(Region city_crew) {
+    public void relocate() {
 
     }
 
     @Override
-    public void move(String command, Region city_crew) {
+    public void move(Direction dir) {
 
     }
 
@@ -80,7 +80,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public void shoot(String command, Region city_crew) {
+    public void shoot(Direction dir) {
 
     }
 
