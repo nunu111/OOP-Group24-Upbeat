@@ -60,30 +60,30 @@ public class Parser extends Command{
             move(ParseDirection());
         }
     }
-    private double ParseDirection() throws SyntaxError {
+    private Direction ParseDirection() throws SyntaxError {
         if(tkz.peek("up")){
             tkz.consume();
-            return Direction(Direction.up);
+            return Direction.up;
         }
         else if(tkz.peek("down")){
             tkz.consume();
-            return Direction(Direction.down);
+            return Direction.down;
         }
         else if(tkz.peek("upleft")){
             tkz.consume();
-            return Direction(Direction.upleft);
+            return Direction.upleft;
         }
         else if(tkz.peek("upright")){
             tkz.consume();
-            return Direction(Direction.upright);
+            return Direction.upright;
         }
         else if(tkz.peek("downleft")){
             tkz.consume();
-            return Direction(Direction.downleft);
+            return Direction.downleft;
         }
         else if(tkz.peek("downright")){
             tkz.consume();
-            return Direction(Direction.downright);
+            return Direction.downright;
         }
         else throw new SyntaxError("Direction ERROR");
     }
@@ -207,7 +207,7 @@ public class Parser extends Command{
         }
         else if(tkz.peek("nearby")){
             tkz.consume();
-            return ParseDirection();
+            return nearby(ParseDirection());
         }else throw new SyntaxError("InfoExpression ERROR");
     }
 
