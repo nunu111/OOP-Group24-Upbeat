@@ -1,10 +1,11 @@
+import java.util.HashMap;
 import java.util.Random;
 
 public class Game {
     public Region[][] field;
     public long col;
     public long row;
-    public Player[] p;
+    public Player[] listofplayer;
     public long cur_player;
     public int init_plan_min;
     public int init_plan_sec;
@@ -15,7 +16,7 @@ public class Game {
     public long rev_cost;
     public long max_dep;
     public int interest_pct;
-
+    protected final HashMap<Player, HashMap<String,Double>> assign_var = new HashMap<>();
 
     public Game(long col, long row, long Num_p, String[] name,long init_budget, long rev_cost, int interest_pct, long max_dep, int init_plan_min, int init_plan_sec, long init_center_dep, int plan_rev_min, int plan_rev_sec){
         this.col = col;
@@ -29,10 +30,10 @@ public class Game {
                 this.field[i][j] = new Region(i+1,j+1);
             }
         }
-        this.p = new Player[(int) Num_p];
+        this.listofplayer = new Player[(int) Num_p];
         Region[] city_center = RandomMap(this.row,this.col,Num_p,init_center_dep);
         for (int i = 0 ; i < Num_p ; i++){
-            this.p[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
+            this.listofplayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
         }
         this.rev_cost = rev_cost;
         this.interest_pct = interest_pct;

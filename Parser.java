@@ -2,8 +2,9 @@ import java.util.NoSuchElementException;
 import java.util.function.DoubleUnaryOperator;
 
 public class Parser extends Command{
-    String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest","(",")"
-            ,"move","nearby","opponent","relocate","shoot","then","up","upleft","upright","while","{","}"};
+    String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest"
+            ,"move","nearby","opponent","relocate","shoot","then","up","upleft","upright","while",};
+    char[] overlapword = {'{','}','(',')'};
     private Tokenizer tkz;
     public Parser(Tokenizer _tkz){
         this.tkz = _tkz;
@@ -215,6 +216,12 @@ public class Parser extends Command{
         if(Character.isDigit(str.charAt(0))) return false;
         for(int i =0; i< reservedword.length;i++){
             if(reservedword[i].equals(str)) return false;
+        }
+        for(int i =0; i < str.length();i++){
+            for(int j=0;j <overlapword.length;j++){
+                if(str.charAt(i) == overlapword[j])return false;
+            }
+
         }
         return true;
     }

@@ -1,45 +1,45 @@
 import java.util.Random;
 public class Command implements AllCommand {
-    public Game a ;
+    public Game lgame ;
 
     @Override
     public long rows() {
-        return a.row;
+        return lgame.row;
     }
 
     @Override
     public long cols() {
-        return a.col;
+        return lgame.col;
     }
 
     @Override
     public long currow() {
-        return a.p[(int) a.cur_player].city_crew.row;
+        return lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
     }
 
     @Override
     public long curcol() {
-        return a.p[(int) a.cur_player].city_crew.col;
+        return lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
     }
 
     @Override
     public long budget() {
-        return a.p[(int) a.cur_player].budget;
+        return lgame.listofplayer[(int) lgame.cur_player].budget;
     }
 
     @Override
     public long deposit() {
-        return (long) a.p[(int) a.cur_player].city_crew.deposit;
+        return (long) lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit;
     }
 
     @Override
     public long interest() {
-        return a.interest_pct;
+        return lgame.interest_pct;
     }
 
     @Override
     public long maxdeposit() {
-        return a.max_dep;
+        return lgame.max_dep;
     }
 
     @Override
@@ -90,12 +90,12 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public void AssignVariable(String a, double b) {
-
+    public void AssignVariable(String var_name, double var_value) {
     }
 
     @Override
-    public double GetVariableValue(String a) {
+    public double GetVariableValue(String var_name) {
+//        return lgame.listofplayer[(int) lgame.cur_player].assign_var.get(var_name);
         return 0;
     }
 }
