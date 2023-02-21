@@ -20,10 +20,10 @@ public interface AllCommand {
     public long nearby();
     public void done();
     public void relocate();
-    public void move(Direction dir);
+    public double move(Direction dir);
     public void invest();
     public void collect();
-    public void shoot(Direction dir);
+    public void shoot(double dir);
     public void AssignVariable(String a,double b);
-    public int GetVariableValue(String key);
+    public double GetVariableValue(String key);
 }

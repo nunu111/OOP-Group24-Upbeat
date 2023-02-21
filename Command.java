@@ -65,8 +65,8 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public void move(Direction dir) {
-
+    public double move(Direction dir) {
+        return 0;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public void shoot(Direction dir) {
+    public void shoot(double dir) {
 
     }
 
@@ -90,7 +90,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public int GetVariableValue(String a) {
+    public double GetVariableValue(String a) {
         return 0;
     }
 }
