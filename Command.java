@@ -1,51 +1,56 @@
-public class Command implements AllCommand{
+import java.util.Random;
+public class Command implements AllCommand {
+    public Game a ;
+
     @Override
     public long rows() {
-        return 0;
+        return a.row;
     }
 
     @Override
     public long cols() {
-        return 0;
+        return a.col;
     }
 
     @Override
     public long currow() {
-        return 0;
+        return a.p[(int) a.cur_player].city_crew.row;
     }
 
     @Override
     public long curcol() {
-        return 0;
+        return a.p[(int) a.cur_player].city_crew.col;
     }
 
     @Override
     public long budget() {
-        return 0;
+        return a.p[(int) a.cur_player].budget;
     }
 
     @Override
     public long deposit() {
-        return 0;
+        return (long) a.p[(int) a.cur_player].city_crew.deposit;
     }
 
     @Override
     public long interest() {
-        return 0;
+        return a.interest_pct;
     }
 
     @Override
     public long maxdeposit() {
-        return 0;
+        return a.max_dep;
     }
 
     @Override
     public int random() {
-        return 0;
+        Random rand = new Random();
+        return rand.nextInt(1000);
     }
 
     @Override
     public long opponent() {
+
         return 0;
     }
 
