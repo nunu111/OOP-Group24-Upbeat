@@ -7,17 +7,17 @@ public interface AllCommand {
         downleft,
         downright
     }
-    public int rows();
-    public int cols();
-    public int currow();
-    public int curcol();
-    public int budget();
-    public int deposit();
-    public int interest();
-    public int maxdeposit();
-    public int random();
-    public int opponent();
-    public int nearby();
+    public long rows();
+    public long cols();
+    public long currow();
+    public long curcol();
+    public long budget();
+    public long deposit();
+    public long interest();
+    public long maxdeposit();
+    public long random();
+    public long opponent();
+    public long nearby();
     public void done();
     public void relocate();
     public void move(Direction dir);
