@@ -50,7 +50,7 @@ public class Command implements AllCommand{
     }
 
     @Override
-    public long nearby() {
+    public long nearby(Direction dir) {
         return 0;
     }
 

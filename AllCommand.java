@@ -17,7 +17,7 @@ public interface AllCommand {
     public long maxdeposit();
     public int random();
     public long opponent();
-    public long nearby();
+    public long nearby(Direction dir);
     public void done();
     public void relocate();
     public void move(Direction dir);
