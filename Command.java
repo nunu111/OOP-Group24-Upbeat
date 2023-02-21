@@ -1,56 +1,56 @@
 public class Command implements AllCommand{
     @Override
-    public int rows() {
+    public long rows() {
         return 0;
     }
 
     @Override
-    public int cols() {
+    public long cols() {
         return 0;
     }
 
     @Override
-    public int currow() {
+    public long currow() {
         return 0;
     }
 
     @Override
-    public int curcol() {
+    public long curcol() {
         return 0;
     }
 
     @Override
-    public int budget() {
+    public long budget() {
         return 0;
     }
 
     @Override
-    public int deposit() {
+    public long deposit() {
         return 0;
     }
 
     @Override
-    public int interest() {
+    public long interest() {
         return 0;
     }
 
     @Override
-    public int maxdeposit() {
+    public long maxdeposit() {
         return 0;
     }
 
     @Override
-    public int random() {
+    public long random() {
         return 0;
     }
 
     @Override
-    public int opponent() {
+    public long opponent() {
         return 0;
     }
 
     @Override
-    public int nearby() {
+    public long nearby() {
         return 0;
     }
 
