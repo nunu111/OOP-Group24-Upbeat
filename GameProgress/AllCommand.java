@@ -26,6 +26,4 @@ public interface AllCommand {
     public void invest();
     public void collect();
     public void shoot(Direction dir);
-    public void AssignVariable(String a,double b);
-    public long GetVariableValue(String key);
 }

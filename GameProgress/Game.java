@@ -18,7 +18,7 @@ public class Game {
     public long rev_cost;
     public long max_dep;
     public int interest_pct;
-    protected final HashMap<Player, HashMap<String,Double>> assign_var = new HashMap<>();
+
 
     public Game(long col, long row, long Num_p, String[] name,long init_budget, long rev_cost, int interest_pct, long max_dep, int init_plan_min, int init_plan_sec, long init_center_dep, int plan_rev_min, int plan_rev_sec){
         this.col = col;
@@ -67,7 +67,9 @@ public class Game {
         }
         return randMap;
     }
-
+    public Player GetCurrentPlayer(){
+        return listofplayer[(int)cur_player];
+    }
     //    void newTurn()
 
 }

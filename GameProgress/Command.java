@@ -1,8 +1,17 @@
 package GameProgress;
+import AST.Expr;
 
 import java.util.Random;
 public class Command implements AllCommand {
+
     public Game lgame ;
+    private static Command instance;
+
+    private Command(){}
+    public static Command instance(){
+        if(instance == null) instance = new Command();
+        return instance;
+    }
 
     @Override
     public long rows() {
@@ -52,7 +61,6 @@ public class Command implements AllCommand {
 
     @Override
     public long opponent() {
-
         return 0;
     }
 
@@ -92,7 +100,8 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public void AssignVariable(String var_name, double var_value) {
+    public void AssignVariable(String var_name, Expr var_value) {
+
     }
 
     @Override

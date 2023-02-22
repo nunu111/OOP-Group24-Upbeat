@@ -1,26 +1,25 @@
 package GameProgress;
 
-import AST.Expr;
-import AST.LongAST;
-import AST.VariableAST;
-import AST.opponentAST;
+import AST.*;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
-public class Parser extends Command{
+public class Parser{
     String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest","{","}","(",")"
             ,"move","nearby","opponent","relocate","shoot","then","up","upleft","upright","while",};
-//    char[] overlapword = {'{','}','(',')'};
-    private Tokenizer tkz;
+
+    private final Nodefactory NodeCreate= Nodefactory.instance();
+    private final Tokenizer tkz;
+
     public Parser(Tokenizer _tkz){
         this.tkz = _tkz;
     }
 
-    public Expr PlanParser() throws SyntaxError {
+    public Statement PlanParser() throws SyntaxError {
         if(!tkz.hasNextToken()) throw new NoSuchElementException("Plan don't have element");
         else{
-            Expr statement= ParseStatement();
+            Statement statement= ParseStatement();
             if(tkz.hasNextToken()) {
                 while(tkz.hasNextToken())System.out.println(tkz.consume());
                 throw new SyntaxError("leftover token");
@@ -28,7 +27,7 @@ public class Parser extends Command{
         }
     }
 
-    private Expr ParseStatement() throws SyntaxError {
+    private Statement ParseStatement() throws SyntaxError {
         while(tkz.hasNextToken()){
 //            System.out.println(tkz.peek());
             try {
@@ -48,13 +47,11 @@ public class Parser extends Command{
         ParseAssignmentStatement();
         ParseActionCommand();
     }
-    private Expr ParseAssignmentStatement() throws SyntaxError { //<identifier> = Expression
+    private AssignVariableAST ParseAssignmentStatement() throws SyntaxError { //Pass
         if(IsNotReservedWord(tkz.peek())){
             String assign_var = tkz.consume();
-            if(tkz.peek("=")){
-                tkz.consume();
-                AssignVariable(assign_var,ParseExpression());
-            }else throw new SyntaxError("AssignmentStatement ERROR (Maybe forget \"=\" )");
+            tkz.consume("=");
+            return new AssignVariableAST(assign_var,ParseExpression());
         }
     }
     private Expr ParseActionCommand() throws SyntaxError {
@@ -78,30 +75,30 @@ public class Parser extends Command{
             move(ParseDirection());
         }
     }
-    private Direction ParseDirection() throws SyntaxError {
+    private AllCommand.Direction ParseDirection() throws SyntaxError {
         if(tkz.peek("up")){
             tkz.consume();
-            return Direction.up;
+            return AllCommand.Direction.up;
         }
         else if(tkz.peek("down")){
             tkz.consume();
-            return Direction.down;
+            return AllCommand.Direction.down;
         }
         else if(tkz.peek("upleft")){
             tkz.consume();
-            return Direction.upleft;
+            return AllCommand.Direction.upleft;
         }
         else if(tkz.peek("upright")){
             tkz.consume();
-            return Direction.upright;
+            return AllCommand.Direction.upright;
         }
         else if(tkz.peek("downleft")){
             tkz.consume();
-            return Direction.downleft;
+            return AllCommand.Direction.downleft;
         }
         else if(tkz.peek("downright")){
             tkz.consume();
-            return Direction.downright;
+            return AllCommand.Direction.downright;
         }
         else throw new SyntaxError("Direction ERROR");
     }
@@ -123,7 +120,7 @@ public class Parser extends Command{
             ParseExpression();
         }
     }
-    private void ParseBlockStatement() throws SyntaxError { //Complete
+    private Statement ParseBlockStatement() throws SyntaxError { //Complete
         if(tkz.peek("{")){
             tkz.consume();
             ParseStatement();
@@ -134,7 +131,7 @@ public class Parser extends Command{
         if(tkz.peek("if")){
             tkz.consume();
             tkz.consume("(");
-            double condition = ParseExpression();
+            Expr condition = ParseExpression();
             tkz.consume(")");
             tkz.consume("then");
             ParseStatement();
@@ -144,62 +141,58 @@ public class Parser extends Command{
             }
         }
     }
-    private void ParseWhileStatement() throws SyntaxError {
+    private Statement ParseWhileStatement() throws SyntaxError {
         if (tkz.peek("while")){
             tkz.consume();
-            if(tkz.peek("(")){
-                tkz.consume();
-                double condition = ParseExpression();
-                if(tkz.peek(")")) {
-                    tkz.consume();
-                    for(int i = 0; i<10000 && condition >0;i++) ParseStatement();
-                    }else throw new SyntaxError("Wrong while Statement");
-                }else throw new SyntaxError("Wrong while Statement");
+            tkz.consume("(");
+            Expr condition = ParseExpression();
+            tkz.consume(")");
+            ParseStatement();
             }
         }
-    private Expr ParseExpression() throws SyntaxError {
-        double T = ParseTerm();
+    private Expr ParseExpression() throws SyntaxError { //Pass
+        Expr T = ParseTerm();
         while (tkz.peek("+") ||tkz.peek("-")){
             if(tkz.peek("+")) {
                 tkz.consume();
-                T += ParseTerm();
+                T = NodeCreate.PlusExpr(T,ParseTerm());
             }
             else if(tkz.peek("-")) {
                 tkz.consume();
-                T -= ParseTerm();
+                T = NodeCreate.MinusExpr(T,ParseTerm());
             }
         }
         return T;
     }
-    private Expr ParseTerm() throws SyntaxError {
-        double F = ParseFactor();
+    private Expr ParseTerm() throws SyntaxError { //Pass
+        Expr F = ParseFactor();
         while (tkz.peek("*") ||tkz.peek("/") || tkz.peek("%")){
             if(tkz.peek("*")) {
                 tkz.consume();
-                F *= ParseFactor();
+                F = NodeCreate.MultiplyExpr(F,ParseFactor());
             }
             else if(tkz.peek("/")) {
                 tkz.consume();
-                F /= ParseFactor();
+                F = NodeCreate.DivideExpr(F,ParseFactor());
             }
             else if(tkz.peek("%")) {
                 tkz.consume();
-                F %= ParseFactor();
+                F = NodeCreate.ModExpr(F,ParseFactor());
             }
         }
         return F;
     }
-    private Expr ParseFactor() throws SyntaxError {
-        double P = ParsePower();
+    private Expr ParseFactor() throws SyntaxError { //Pass
+        Expr P = ParsePower();
         while (tkz.peek("^")){
             if(tkz.peek("^")) {
                 tkz.consume();
-                P = Math.pow(P,ParseTerm());
+                P = NodeCreate.PowExpr(P,ParseTerm());
             }
         }
         return P;
     }
-    private Expr ParsePower() throws SyntaxError {
+    private Expr ParsePower() throws SyntaxError { //Pass
         if(isNumber(tkz.peek())){
             return new LongAST(Long.parseLong(tkz.consume()));
         }else if(IsNotReservedWord(tkz.peek())){
@@ -212,15 +205,14 @@ public class Parser extends Command{
         }else return ParseInfoExpression();
     }
 
-    private Expr ParseInfoExpression() throws SyntaxError {
+    private Expr ParseInfoExpression() throws SyntaxError { //Pass
         if(tkz.peek("opponent")){
             tkz.consume();
-            new opponentAST();
-            return 0;
+            return new opponentAST();
         }
         else if(tkz.peek("nearby")){
             tkz.consume();
-            return nearby(ParseDirection());
+            return new nearbyAST(ParseDirection());
         }else throw new SyntaxError("InfoExpression ERROR");
     }
 
@@ -229,11 +221,6 @@ public class Parser extends Command{
         for(int i =0; i< reservedword.length;i++){
             if(reservedword[i].equals(str)) return false;
         }
-//        for(int i =0; i < str.length();i++){
-//            for(int j=0;j <overlapword.length;j++){
-//                if(str.charAt(i) == overlapword[j])return false;
-//            }
-//        }
         return true;
     }
 
