@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 public class Parser{
     String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest","{","}","(",")"
             ,"move","nearby","opponent","relocate","shoot","then","up","upleft","upright","while",};
-
+    String[] SpecialVariable ={"rows","cols","currow","curcol","budget","deposit","int","maxdeposit","random"};
     private final Nodefactory NodeCreate= Nodefactory.instance();
     private final Tokenizer tkz;
 
@@ -15,25 +15,33 @@ public class Parser{
         this.tkz = _tkz;
     }
 
-    public Statement PlanParser() throws SyntaxError {
+    public PlanAST PlanParser() throws SyntaxError {
         Statement statement= ParseStatement();
+
         if(statement == null) throw new NoSuchElementException("Plan don't have element");
         else{
+            PlanAST plan = new PlanAST();
+            while(statement != null ){
+                System.out.println("...");
+                plan.StatementUpdate(statement);
+                if(!tkz.hasNextToken()) break;
+                statement= ParseStatement();
+
+            }
             if(tkz.hasNextToken()) {
-                while(tkz.hasNextToken())System.out.println(tkz.consume());
+                while(tkz.hasNextToken())System.out.println(tkz.consume()+".");
                 throw new SyntaxError("leftover token");
             }
-            return statement;
+            return plan;
         }
     }
 
     private Statement ParseStatement() throws SyntaxError {
-        Statement statement =ParseCommand();
-//        while(tkz.hasNextToken()){
-        if(statement == null)statement =ParseBlockStatement();
-        if(statement == null)statement =ParseIfStatement();
-        if(statement == null)statement = ParseWhileStatement();
-//        }
+        Statement statement = null;
+            statement =ParseCommand();
+            if(statement == null)statement =ParseBlockStatement();
+            if(statement == null)statement =ParseIfStatement();
+            if(statement == null)statement = ParseWhileStatement();
         return statement;
     }
 
@@ -42,12 +50,12 @@ public class Parser{
         if(statement == null) statement =ParseActionCommand();
         return statement;
     }
-    private Statement ParseAssignmentStatement() throws SyntaxError { //Pass
-        if(IsNotReservedWord(tkz.peek())){
+    private Statement ParseAssignmentStatement() throws SyntaxError {
+        if(IsNotReservedWord(tkz.peek()) && IsNotSpecialVariable(tkz.peek())){
             String assign_var = tkz.consume();
             tkz.consume("=");
             return new AssignVariableAST(assign_var,ParseExpression());
-        }return null;
+        }else return null;
     }
     private Statement ParseActionCommand() throws SyntaxError {
         Statement statement;
@@ -89,6 +97,12 @@ public class Parser{
         else if(tkz.peek("upright")){
             tkz.consume();
             return AllCommand.Direction.upright;
+        }else if(tkz.peek("right")){
+            tkz.consume();
+            return AllCommand.Direction.right;
+        }else if(tkz.peek("left")){
+            tkz.consume();
+            return AllCommand.Direction.left;
         }
         else if(tkz.peek("downleft")){
             tkz.consume();
@@ -119,9 +133,15 @@ public class Parser{
     private Statement ParseBlockStatement() throws SyntaxError {
         if(tkz.peek("{")){
             tkz.consume();
-            Statement statement= ParseStatement();
+            Statement statement = ParseStatement();
+            BodyStatement Body = new BlockStatementAST();
+            while(statement != null){
+                Body.StatementUpdate(statement);
+                if(!tkz.hasNextToken()) break;
+                statement = ParseStatement();
+            }
             tkz.consume("}");
-            return statement;
+            return Body;
         }else return null;
     }
     private Statement ParseIfStatement() throws SyntaxError {
@@ -192,6 +212,34 @@ public class Parser{
     private Expr ParsePower() throws SyntaxError { //Pass
         if(isNumber(tkz.peek())){
             return new LongAST(Long.parseLong(tkz.consume()));
+        }else if (tkz.peek("rows")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetRows());
+        }
+        else if(tkz.peek("cols")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetCols());
+        }else if(tkz.peek("currow")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetCurrow());
+        }else if(tkz.peek("curcol")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetCurcol());
+        }else if(tkz.peek("budget")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetBudget());
+        }else if(tkz.peek("deposit")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetDeposit());
+        }else if(tkz.peek("int")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetInterest());
+        }else if(tkz.peek("maxdeposit")){
+            tkz.consume();
+            return new LongAST(Command.instance().GetMaxDeposit());
+        }else if (tkz.peek("random")) {
+            tkz.consume();
+            return new LongAST(Command.instance().GetRandom()); // do on purpose
         }else if(IsNotReservedWord(tkz.peek())){
             return new VariableAST(tkz.consume());
         }else if(tkz.peek("(")){
@@ -220,7 +268,12 @@ public class Parser{
         }
         return true;
     }
-
+    private boolean IsNotSpecialVariable(String str){
+        for(String key :SpecialVariable) {
+            if(key.equals(str)) return false;
+        }
+        return true;
+    }
     private boolean isNumber(String str){
         try{
             double num = Long.parseLong(str);

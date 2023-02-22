@@ -1,7 +1,5 @@
 package AST;
 
-import GameProgress.Game;
-
 public class WhileAST implements Statement{
     private Expr condition;
     private Statement statement;
@@ -11,6 +9,7 @@ public class WhileAST implements Statement{
     }
     @Override
     public void eval() throws EvalError {
+        if(statement == null) throw new EvalError("While statement has empty body");
         for(int counter=0;counter<10000 && condition.eval(Variable_Storage.instance().GetVariableMap())>0;counter++){
             this.statement.eval();
         }

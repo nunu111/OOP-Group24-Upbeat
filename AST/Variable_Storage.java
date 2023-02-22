@@ -26,6 +26,9 @@ public class Variable_Storage {
     public void AssignVariable(String _VarName,Expr _VarValue) throws EvalError {
         PlayerVariable[(int)findPlayer.lgame.cur_player].put(_VarName,_VarValue.eval(PlayerVariable[(int)findPlayer.lgame.cur_player]));
     }
+    public void AssignVariable(String _VarName,double _VarValue){
+        PlayerVariable[(int)findPlayer.lgame.cur_player].put(_VarName,_VarValue);
+    }
     public double GetVariableValue(String key){
         return PlayerVariable[(int)findPlayer.lgame.cur_player].get(key);
     }

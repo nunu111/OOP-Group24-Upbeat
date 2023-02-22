@@ -6,7 +6,7 @@ public class Player {
     protected Region city_center;
     protected Region city_crew;
 
-    Player(String name, long budget, Region city_center, Region city_crew){
+    public Player(String name, long budget, Region city_center, Region city_crew){
         this.name = name;
         this.budget = budget;
         this.city_center = city_center;
