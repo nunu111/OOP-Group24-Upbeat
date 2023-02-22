@@ -5,19 +5,21 @@ public interface AllCommand {
         up,
         down,
         upleft,
+        right,
+        left,
         upright,
         downleft,
         downright
     }
-    public long rows();
-    public long cols();
-    public long currow();
-    public long curcol();
-    public long budget();
-    public long deposit();
-    public long interest();
-    public long maxdeposit();
-    public int random();
+    public long GetRows();
+    public long GetCols();
+    public long GetCurrow();
+    public long GetCurcol();
+    public long GetBudget();
+    public long GetDeposit();
+    public long GetInterest();
+    public long GetMaxDeposit();
+    public int GetRandom();
     public long opponent();
     public long nearby(Direction dir);
     public void done();

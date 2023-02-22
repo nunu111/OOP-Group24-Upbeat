@@ -20,7 +20,8 @@ public class Game {
     public int interest_pct;
 
 
-    public Game(long col, long row, long Num_p, String[] name,long init_budget, long rev_cost, int interest_pct, long max_dep, int init_plan_min, int init_plan_sec, long init_center_dep, int plan_rev_min, int plan_rev_sec){
+    public Game(long col, long row, long Num_p, String[] name,long init_budget, long rev_cost, int interest_pct,
+                long max_dep, int init_plan_min, int init_plan_sec, long init_center_dep, int plan_rev_min, int plan_rev_sec){
         this.col = col;
         this.row = row;
         this.cur_player=0;

@@ -14,49 +14,49 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public long rows() {
+    public long GetRows() {
         return lgame.row;
     }
 
     @Override
-    public long cols() {
+    public long GetCols() {
         return lgame.col;
     }
 
     @Override
-    public long currow() {
+    public long GetCurrow() {
         return lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
     }
 
     @Override
-    public long curcol() {
+    public long GetCurcol() {
         return lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
     }
 
     @Override
-    public long budget() {
+    public long GetBudget() {
         return lgame.listofplayer[(int) lgame.cur_player].budget;
     }
 
     @Override
-    public long deposit() {
+    public long GetDeposit() {
         return (long) lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit;
     }
 
     @Override
-    public long interest() {
+    public long GetInterest() {
         return lgame.interest_pct;
     }
 
     @Override
-    public long maxdeposit() {
+    public long GetMaxDeposit() {
         return lgame.max_dep;
     }
 
     @Override
-    public int random() {
-        Random rand = new Random();
-        return rand.nextInt(1000);
+    public int GetRandom() {
+//        Random rand = new Random();
+        return 0;
     }
 
     @Override
