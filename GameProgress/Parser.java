@@ -1,19 +1,26 @@
+package GameProgress;
+
+import AST.Expr;
+import AST.LongAST;
+import AST.VariableAST;
+import AST.opponentAST;
+
 import java.util.NoSuchElementException;
-import java.util.function.DoubleUnaryOperator;
+import java.util.concurrent.TimeUnit;
 
 public class Parser extends Command{
-    String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest"
+    String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest","{","}","(",")"
             ,"move","nearby","opponent","relocate","shoot","then","up","upleft","upright","while",};
-    char[] overlapword = {'{','}','(',')'};
+//    char[] overlapword = {'{','}','(',')'};
     private Tokenizer tkz;
     public Parser(Tokenizer _tkz){
         this.tkz = _tkz;
     }
 
-    public void PlanParser() throws SyntaxError {
+    public Expr PlanParser() throws SyntaxError {
         if(!tkz.hasNextToken()) throw new NoSuchElementException("Plan don't have element");
         else{
-            ParseStatement();
+            Expr statement= ParseStatement();
             if(tkz.hasNextToken()) {
                 while(tkz.hasNextToken())System.out.println(tkz.consume());
                 throw new SyntaxError("leftover token");
@@ -21,28 +28,36 @@ public class Parser extends Command{
         }
     }
 
-    private void ParseStatement() throws SyntaxError {
-        ParseCommand();
-        ParseBlockStatement();
-        ParseIfStatement();
-        ParseWhileStatement();
+    private Expr ParseStatement() throws SyntaxError {
+        while(tkz.hasNextToken()){
+//            System.out.println(tkz.peek());
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            }catch (InterruptedException e){
+                System.out.println(e.getMessage());
+            }
+            ParseCommand();
+            ParseBlockStatement();
+            ParseIfStatement();
+            ParseWhileStatement();
+        }
+
     }
 
-    private void ParseCommand() throws SyntaxError {
+    private Expr ParseCommand() throws SyntaxError {
         ParseAssignmentStatement();
         ParseActionCommand();
     }
-    private void ParseAssignmentStatement() throws SyntaxError { //<identifier> = Expression
+    private Expr ParseAssignmentStatement() throws SyntaxError { //<identifier> = Expression
         if(IsNotReservedWord(tkz.peek())){
             String assign_var = tkz.consume();
             if(tkz.peek("=")){
                 tkz.consume();
-                double value_of_var = ParseExpression();
-                AssignVariable(assign_var,value_of_var);
+                AssignVariable(assign_var,ParseExpression());
             }else throw new SyntaxError("AssignmentStatement ERROR (Maybe forget \"=\" )");
         }
     }
-    private void ParseActionCommand() throws SyntaxError {
+    private Expr ParseActionCommand() throws SyntaxError {
         if(tkz.peek("done")){
             tkz.consume();
             done();
@@ -53,6 +68,8 @@ public class Parser extends Command{
         }
         else {
             ParseMoveCommand();
+            ParseRegionCommand();
+            ParseAttackCommand();
         }
     }
     private void ParseMoveCommand() throws SyntaxError {
@@ -88,46 +105,43 @@ public class Parser extends Command{
         }
         else throw new SyntaxError("Direction ERROR");
     }
-    private void ParseRegionCommand(){
+    private void ParseRegionCommand() throws SyntaxError {
         if(tkz.peek("invest")){
+            tkz.consume();
             invest();
+            ParseExpression();
         }else if(tkz.peek("collect")){
+            tkz.consume();
             collect();
+            ParseExpression();
         }
     }
     private void ParseAttackCommand() throws SyntaxError {
         if(tkz.peek("shoot")){
+            tkz.consume();
             shoot(ParseDirection());
             ParseExpression();
-
         }
     }
     private void ParseBlockStatement() throws SyntaxError { //Complete
         if(tkz.peek("{")){
             tkz.consume();
-            if(tkz.hasNextToken()) ParseStatement();
-            if(tkz.peek("}")) tkz.consume();
-            else throw new SyntaxError("Don't have end Block");
+            ParseStatement();
+            tkz.consume("}");
         }
     }
     private void ParseIfStatement() throws SyntaxError {
         if(tkz.peek("if")){
             tkz.consume();
-            if(tkz.peek("(")){
-                tkz.consume();
-                ParseExpression();
-                if(tkz.peek(")")){
-                    tkz.consume();
-                    if(tkz.peek("then")){
-                        tkz.consume();
-                        ParseStatement();
-                    }
-                    if(tkz.peek("else")){
-                        tkz.consume();
-                        ParseStatement();
-                    }
-                }else throw new SyntaxError("Wrong If Statement");
-            } else throw new SyntaxError("Wrong If Statement");
+            tkz.consume("(");
+            double condition = ParseExpression();
+            tkz.consume(")");
+            tkz.consume("then");
+            ParseStatement();
+            tkz.consume("else");
+            if(condition <= 0){
+                ParseStatement();
+            }
         }
     }
     private void ParseWhileStatement() throws SyntaxError {
@@ -135,14 +149,15 @@ public class Parser extends Command{
             tkz.consume();
             if(tkz.peek("(")){
                 tkz.consume();
-                ParseExpression();
+                double condition = ParseExpression();
                 if(tkz.peek(")")) {
-                    ParseStatement();
-                    }else throw new SyntaxError("Wrong If Statement");
-                }else throw new SyntaxError("Wrong If Statement");
+                    tkz.consume();
+                    for(int i = 0; i<10000 && condition >0;i++) ParseStatement();
+                    }else throw new SyntaxError("Wrong while Statement");
+                }else throw new SyntaxError("Wrong while Statement");
             }
         }
-    private double ParseExpression() throws SyntaxError {
+    private Expr ParseExpression() throws SyntaxError {
         double T = ParseTerm();
         while (tkz.peek("+") ||tkz.peek("-")){
             if(tkz.peek("+")) {
@@ -156,7 +171,7 @@ public class Parser extends Command{
         }
         return T;
     }
-    private double ParseTerm() throws SyntaxError {
+    private Expr ParseTerm() throws SyntaxError {
         double F = ParseFactor();
         while (tkz.peek("*") ||tkz.peek("/") || tkz.peek("%")){
             if(tkz.peek("*")) {
@@ -174,7 +189,7 @@ public class Parser extends Command{
         }
         return F;
     }
-    private double ParseFactor() throws SyntaxError {
+    private Expr ParseFactor() throws SyntaxError {
         double P = ParsePower();
         while (tkz.peek("^")){
             if(tkz.peek("^")) {
@@ -184,26 +199,23 @@ public class Parser extends Command{
         }
         return P;
     }
-    private double ParsePower() throws SyntaxError {
+    private Expr ParsePower() throws SyntaxError {
         if(isNumber(tkz.peek())){
-            return Long.parseLong(tkz.consume());
+            return new LongAST(Long.parseLong(tkz.consume()));
         }else if(IsNotReservedWord(tkz.peek())){
-            double assign_num = GetVariableValue(tkz.consume());
-            return assign_num;
+            return new VariableAST(tkz.consume());
         }else if(tkz.peek("(")){
             tkz.consume();
-            double calculate = ParseExpression();
-            if(tkz.peek(")")) {
-                tkz.consume();
-                return calculate;
-            }
-            else throw new SyntaxError(") missing");
+            Expr calculate = ParseExpression();
+            tkz.consume(")");
+            return calculate;
         }else return ParseInfoExpression();
     }
 
-    private double ParseInfoExpression() throws SyntaxError {
+    private Expr ParseInfoExpression() throws SyntaxError {
         if(tkz.peek("opponent")){
             tkz.consume();
+            new opponentAST();
             return 0;
         }
         else if(tkz.peek("nearby")){
@@ -217,18 +229,17 @@ public class Parser extends Command{
         for(int i =0; i< reservedword.length;i++){
             if(reservedword[i].equals(str)) return false;
         }
-        for(int i =0; i < str.length();i++){
-            for(int j=0;j <overlapword.length;j++){
-                if(str.charAt(i) == overlapword[j])return false;
-            }
-
-        }
+//        for(int i =0; i < str.length();i++){
+//            for(int j=0;j <overlapword.length;j++){
+//                if(str.charAt(i) == overlapword[j])return false;
+//            }
+//        }
         return true;
     }
 
     private boolean isNumber(String str){
         try{
-            double num = Double.parseDouble(str);
+            double num = Long.parseLong(str);
             return true;
         }catch (NumberFormatException e){
             return false;

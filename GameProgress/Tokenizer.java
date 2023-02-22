@@ -1,3 +1,5 @@
+package GameProgress;
+
 import java.util.NoSuchElementException;
 
 public class Tokenizer {
@@ -20,6 +22,7 @@ public class Tokenizer {
     public String consume() throws SyntaxError {
         if (!hasNextToken()) throw new NoSuchElementException("no more tokens");
         String result = next;
+        System.out.println(result);
         computeNext();
         return result;
     }
@@ -36,7 +39,7 @@ public class Tokenizer {
 
     private void computeNext() throws SyntaxError {
         StringBuilder s = new StringBuilder();
-        while (pos < src.length() && Character.isSpaceChar(src.charAt(pos))) {
+        while (pos < src.length() && (Character.isSpaceChar(src.charAt(pos)) || src.charAt(pos)=='\n')) {
             pos++;
         }
         if(pos == src.length()){
@@ -55,12 +58,10 @@ public class Tokenizer {
             }
         }
         else if (c == '#') { //ignore comment
-            for(pos++;pos <src.length() ;pos++) {
-                if(src.charAt(pos)== '\n') {
-                    pos++;
-                    computeNext();
-                    return;
-                }
+            for(pos++;pos<src.length();pos++) if(src.charAt(pos)=='\n') {
+                pos++;
+                computeNext();
+                return;
             }
         }
         else if(c=='+' ||c=='-'||c=='*'||c=='/'||c=='%'|| c =='(' ||c == ')'|| c =='^' || c =='=' || c =='{' || c =='}'){
@@ -69,10 +70,9 @@ public class Tokenizer {
         }
         else if (c == '\n'){
             pos++;
-            computeNext();
-            return;
         }
         else throw new SyntaxError("unknown character: " + c);
         next = s.toString();
+//        System.out.println(s+".");
     }
 }

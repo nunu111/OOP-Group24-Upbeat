@@ -1,3 +1,5 @@
+package GameProgress;
+
 import java.util.Random;
 public class Command implements AllCommand {
     public Game lgame ;
@@ -94,7 +96,7 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public double GetVariableValue(String var_name) {
+    public long GetVariableValue(String var_name) {
 //        return lgame.listofplayer[(int) lgame.cur_player].assign_var.get(var_name);
         return 0;
     }

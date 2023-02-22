@@ -1,3 +1,5 @@
+package GameProgress;
+
 public interface AllCommand {
     enum Direction {
         up,
@@ -25,5 +27,5 @@ public interface AllCommand {
     public void collect();
     public void shoot(Direction dir);
     public void AssignVariable(String a,double b);
-    public double GetVariableValue(String key);
+    public long GetVariableValue(String key);
 }
