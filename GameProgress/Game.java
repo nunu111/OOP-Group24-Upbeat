@@ -70,9 +70,6 @@ public class Game {
             this.listofplayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
         }
     }
-    public Player GetCurrentPlayer(){
-        return listofplayer[(int)cur_player];
-    }
     //    void newTurn()
 
 }
