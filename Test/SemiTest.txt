@@ -1,1 +1,8 @@
-invest 50
+t = 100
+a = 5
+while (t) {
+    if (a-2 ) then a= a-1 else {
+    t= t-200
+    t = q+50
+    }
+}
