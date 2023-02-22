@@ -3,6 +3,6 @@ package AST;
 import java.util.Map;
 
 public interface Expr {
-    public long eval(Map<String,Long> binding) throws EvalError;
+    public double eval(Map<String,Double> binding) throws EvalError;
 }
 

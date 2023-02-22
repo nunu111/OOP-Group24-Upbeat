@@ -3,7 +3,6 @@ package GameProgress;
 import AST.*;
 
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 public class Parser{
     String[] reservedword = {"collect","done","down","downleft","downright","else","if","invest","{","}","(",")"
@@ -17,63 +16,62 @@ public class Parser{
     }
 
     public Statement PlanParser() throws SyntaxError {
-        if(!tkz.hasNextToken()) throw new NoSuchElementException("Plan don't have element");
+        Statement statement= ParseStatement();
+        if(statement == null) throw new NoSuchElementException("Plan don't have element");
         else{
-            Statement statement= ParseStatement();
             if(tkz.hasNextToken()) {
                 while(tkz.hasNextToken())System.out.println(tkz.consume());
                 throw new SyntaxError("leftover token");
             }
+            return statement;
         }
     }
 
     private Statement ParseStatement() throws SyntaxError {
-        while(tkz.hasNextToken()){
-//            System.out.println(tkz.peek());
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            }catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-            ParseCommand();
-            ParseBlockStatement();
-            ParseIfStatement();
-            ParseWhileStatement();
-        }
-
+        Statement statement =ParseCommand();
+//        while(tkz.hasNextToken()){
+        if(statement == null)statement =ParseBlockStatement();
+        if(statement == null)statement =ParseIfStatement();
+        if(statement == null)statement = ParseWhileStatement();
+//        }
+        return statement;
     }
 
-    private Expr ParseCommand() throws SyntaxError {
-        ParseAssignmentStatement();
-        ParseActionCommand();
+    private Statement ParseCommand() throws SyntaxError {
+        Statement statement =ParseAssignmentStatement();
+        if(statement == null) statement =ParseActionCommand();
+        return statement;
     }
-    private AssignVariableAST ParseAssignmentStatement() throws SyntaxError { //Pass
+    private Statement ParseAssignmentStatement() throws SyntaxError { //Pass
         if(IsNotReservedWord(tkz.peek())){
             String assign_var = tkz.consume();
             tkz.consume("=");
             return new AssignVariableAST(assign_var,ParseExpression());
-        }
+        }return null;
     }
-    private Expr ParseActionCommand() throws SyntaxError {
+    private Statement ParseActionCommand() throws SyntaxError {
+        Statement statement;
         if(tkz.peek("done")){
             tkz.consume();
-            done();
+            statement = new doneAST();
         }
         else if(tkz.peek("relocate")){
             tkz.consume();
-            relocate();
+            statement = new relocateAST();
         }
         else {
-            ParseMoveCommand();
-            ParseRegionCommand();
-            ParseAttackCommand();
+            statement =ParseMoveCommand();
+            if(statement == null)ParseRegionCommand();
+            if(statement == null)ParseAttackCommand();
         }
+        return statement;
     }
-    private void ParseMoveCommand() throws SyntaxError {
+    private moveAST ParseMoveCommand() throws SyntaxError {
         if(tkz.peek("move")){
             tkz.consume();
-            move(ParseDirection());
+            return new moveAST(ParseDirection());
         }
+        return null;
     }
     private AllCommand.Direction ParseDirection() throws SyntaxError {
         if(tkz.peek("up")){
@@ -102,44 +100,42 @@ public class Parser{
         }
         else throw new SyntaxError("Direction ERROR");
     }
-    private void ParseRegionCommand() throws SyntaxError {
+    private Statement ParseRegionCommand() throws SyntaxError {
         if(tkz.peek("invest")){
             tkz.consume();
-            invest();
-            ParseExpression();
+            return new investAST(ParseExpression());
         }else if(tkz.peek("collect")){
             tkz.consume();
-            collect();
-            ParseExpression();
+            return new collectAST(ParseExpression());
         }
+        return null;
     }
-    private void ParseAttackCommand() throws SyntaxError {
+    private Statement ParseAttackCommand() throws SyntaxError {
         if(tkz.peek("shoot")){
             tkz.consume();
-            shoot(ParseDirection());
-            ParseExpression();
-        }
+            return new shootAST(ParseDirection(),ParseExpression());
+        }else return null;
     }
-    private Statement ParseBlockStatement() throws SyntaxError { //Complete
+    private Statement ParseBlockStatement() throws SyntaxError {
         if(tkz.peek("{")){
             tkz.consume();
-            ParseStatement();
+            Statement statement= ParseStatement();
             tkz.consume("}");
-        }
+            return statement;
+        }else return null;
     }
-    private void ParseIfStatement() throws SyntaxError {
+    private Statement ParseIfStatement() throws SyntaxError {
         if(tkz.peek("if")){
             tkz.consume();
             tkz.consume("(");
             Expr condition = ParseExpression();
             tkz.consume(")");
             tkz.consume("then");
-            ParseStatement();
+            Statement TrueCondition = ParseStatement();
             tkz.consume("else");
-            if(condition <= 0){
-                ParseStatement();
-            }
-        }
+            Statement FalseCondition=  ParseStatement();
+            return new IfElseAST(condition,TrueCondition,FalseCondition);
+        }else return null;
     }
     private Statement ParseWhileStatement() throws SyntaxError {
         if (tkz.peek("while")){
@@ -147,8 +143,9 @@ public class Parser{
             tkz.consume("(");
             Expr condition = ParseExpression();
             tkz.consume(")");
-            ParseStatement();
+            return new WhileAST(condition,ParseStatement());
             }
+        else return null;
         }
     private Expr ParseExpression() throws SyntaxError { //Pass
         Expr T = ParseTerm();

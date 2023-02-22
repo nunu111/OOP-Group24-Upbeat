@@ -11,15 +11,15 @@ public class BinaryArithAST implements Expr{
         this.right = _right;
     }
 
-    public long eval(Map<String,Long> binding) throws EvalError {
-        long lv =left.eval(binding);
-        long rv= right.eval(binding);
+    public double eval(Map<String,Double> binding) throws EvalError {
+        double lv =left.eval(binding);
+        double rv= right.eval(binding);
         if(op.equals("+")) return lv+rv;
         if(op.equals("-")) return lv-rv;
         if(op.equals("*")) return lv*rv;
         if(op.equals("/")) return lv/rv;
         if(op.equals("%")) return lv%rv;
-        if(op.equals("^")) return (long)Math.pow(lv,rv);
+        if(op.equals("^")) return Math.pow(lv,rv);
         throw new EvalError("unknown op: " + op);
 
     }

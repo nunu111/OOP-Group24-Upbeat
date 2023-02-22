@@ -10,8 +10,9 @@ public class nearbyAST implements Expr{
     public nearbyAST(AllCommand.Direction _dir){
         this.dir = _dir;
     }
+
     @Override
-    public long eval(Map<String, Long> binding) throws EvalError {
+    public double eval(Map<String, Double> binding) throws EvalError {
         return Command.instance().opponent();
     }
 }

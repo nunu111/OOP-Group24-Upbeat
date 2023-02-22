@@ -85,28 +85,17 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public void invest() {
+    public void invest(double value) {
 
     }
 
     @Override
-    public void collect() {
+    public void collect(double value) {
 
     }
 
     @Override
     public void shoot(Direction dir) {
 
-    }
-
-    @Override
-    public void AssignVariable(String var_name, Expr var_value) {
-
-    }
-
-    @Override
-    public long GetVariableValue(String var_name) {
-//        return lgame.listofplayer[(int) lgame.cur_player].assign_var.get(var_name);
-        return 0;
     }
 }

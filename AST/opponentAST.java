@@ -6,7 +6,7 @@ import java.util.Map;
 public class opponentAST implements Expr{
 
     @Override
-    public long eval(Map<String, Long> binding) throws EvalError {
+    public double eval(Map<String, Double> binding) throws EvalError {
         return Command.instance().opponent();
     }
 }

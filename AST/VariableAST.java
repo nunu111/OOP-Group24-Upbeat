@@ -9,7 +9,7 @@ public class VariableAST implements Expr {
     }
 
     @Override
-    public long eval(Map<String, Long> binding) throws EvalError {
+    public double eval(Map<String, Double> binding) throws EvalError {
         if(binding.containsKey(VarName)) return binding.get(VarName);
         else throw  new EvalError("undefined variable: " + VarName);
     }

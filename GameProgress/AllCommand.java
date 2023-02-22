@@ -23,7 +23,7 @@ public interface AllCommand {
     public void done();
     public void relocate();
     public void move(Direction dir);
-    public void invest();
-    public void collect();
+    public void invest(double value);
+    public void collect(double value);
     public void shoot(Direction dir);
 }

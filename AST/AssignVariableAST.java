@@ -9,7 +9,7 @@ public class AssignVariableAST implements Statement{
         this.VarValue = _VarValue;
     }
 
-    public void eval() {
+    public void eval() throws EvalError {
         assign.AssignVariable(VarName,VarValue);
     }
 }

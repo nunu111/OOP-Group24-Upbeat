@@ -8,7 +8,7 @@ public class LongAST implements Expr{
         this.val = _val;
     }
     @Override
-    public long eval(Map<String, Long> binding){
+    public double eval(Map<String, Double> binding){
         return val;
     }
 }

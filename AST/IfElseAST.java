@@ -1,13 +1,18 @@
 package AST;
 
-public class IfElseAST {
+public class IfElseAST implements Statement{
     private Expr condition;
-    private Expr ifStatement,elseStatement;
-    public IfElseAST(Expr _condition,Expr _ifStatement,Expr _elseStatement){
+    private Statement ifStatement,elseStatement;
+    public IfElseAST(Expr _condition,Statement _ifStatement,Statement _elseStatement){
         this.condition = _condition;
         this.ifStatement = _ifStatement;
         this.elseStatement = _elseStatement;
     }
 
 
+    @Override
+    public void eval() throws EvalError {
+        if(condition.eval(Variable_Storage.instance().GetVariableMap()) >0 ) ifStatement.eval();
+        else elseStatement.eval();
+    }
 }
