@@ -45,7 +45,7 @@ public class Command implements AllCommand {
 
     @Override
     public long GetInterest() {
-        return lgame.interest_pct;
+        return (long) lgame.interest_pct;
     }
 
     @Override
@@ -55,12 +55,23 @@ public class Command implements AllCommand {
 
     @Override
     public int GetRandom() {
-//        Random rand = new Random();
-        return 0;
+        Random rand = new Random();
+        return rand.nextInt(1000);
     }
 
     @Override
     public long opponent() {
+        long distance ;
+        long direction ;
+        boolean found_op = false;
+        while(!found_op){
+            if(lgame.listofplayer[(int) lgame.cur_player].city_crew.col%2==1){
+
+            }else{
+
+            }
+        }
+
         return 0;
     }
 

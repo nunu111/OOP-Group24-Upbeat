@@ -9,19 +9,19 @@ public class Game {
     public long row;
     public Player[] listofplayer;
     public long cur_player;
-    public int init_plan_min;
-    public int init_plan_sec;
+    public long init_plan_min;
+    public long init_plan_sec;
     public long init_budget;
     public long init_center_dep;
-    public int plan_rev_min;
-    public int plan_rev_sec;
+    public long plan_rev_min;
+    public long plan_rev_sec;
     public long rev_cost;
     public long max_dep;
-    public int interest_pct;
+    public double interest_pct;
 
 
-    public Game(long col, long row,long init_budget, long rev_cost, int interest_pct,
-                long max_dep, int init_plan_min, int init_plan_sec, long init_center_dep, int plan_rev_min, int plan_rev_sec){
+    public Game(long col, long row,long init_budget, long rev_cost, double interest_pct,
+                long max_dep, long init_plan_min, long init_plan_sec, long init_center_dep, long plan_rev_min, long plan_rev_sec){
         this.col = col;
         this.row = row;
         this.cur_player=0;
