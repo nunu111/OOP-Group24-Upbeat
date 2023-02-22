@@ -20,7 +20,7 @@ public class Game {
     public int interest_pct;
 
 
-    public Game(long col, long row, long Num_p, String[] name,long init_budget, long rev_cost, int interest_pct,
+    public Game(long col, long row,long init_budget, long rev_cost, int interest_pct,
                 long max_dep, int init_plan_min, int init_plan_sec, long init_center_dep, int plan_rev_min, int plan_rev_sec){
         this.col = col;
         this.row = row;
@@ -32,11 +32,6 @@ public class Game {
             for(int j = 0; j < col ; j++){
                 this.field[i][j] = new Region(i+1,j+1);
             }
-        }
-        this.listofplayer = new Player[(int) Num_p];
-        Region[] city_center = RandomMap(this.row,this.col,Num_p,init_center_dep);
-        for (int i = 0 ; i < Num_p ; i++){
-            this.listofplayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
         }
         this.rev_cost = rev_cost;
         this.interest_pct = interest_pct;
@@ -67,6 +62,13 @@ public class Game {
             randMap[(int) i].AddDepositToCenter(init_deposit);
         }
         return randMap;
+    }
+    public void AddPlayer( long Num_p, String[] name){
+        this.listofplayer = new Player[(int) Num_p];
+        Region[] city_center = RandomMap(this.row,this.col,Num_p,init_center_dep);
+        for (int i = 0 ; i < Num_p ; i++){
+            this.listofplayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
+        }
     }
     public Player GetCurrentPlayer(){
         return listofplayer[(int)cur_player];
