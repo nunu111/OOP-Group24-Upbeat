@@ -3,7 +3,8 @@ package GameProgress;
 import java.util.NoSuchElementException;
 
 public class Tokenizer {
-    private String src, next;
+    private final String src;
+    private String next;
     private int pos;
     public Tokenizer(String _src) throws SyntaxError{
         this.src = _src;
@@ -22,7 +23,6 @@ public class Tokenizer {
     public String consume() throws SyntaxError {
         if (!hasNextToken()) throw new NoSuchElementException("no more tokens");
         String result = next;
-        System.out.println(result);
         computeNext();
         return result;
     }
@@ -73,6 +73,5 @@ public class Tokenizer {
         }
         else throw new SyntaxError("unknown character: " + c);
         next = s.toString();
-//        System.out.println(s+".");
     }
 }

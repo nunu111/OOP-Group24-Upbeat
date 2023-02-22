@@ -16,17 +16,15 @@ public class Parser{
     }
 
     public PlanAST PlanParser() throws SyntaxError {
+        if(!tkz.hasNextToken()) throw new NoSuchElementException("Plan doesn't have element");
         Statement statement= ParseStatement();
-
         if(statement == null) throw new NoSuchElementException("Plan don't have element");
         else{
             PlanAST plan = new PlanAST();
             while(statement != null ){
-                System.out.println("...");
                 plan.StatementUpdate(statement);
                 if(!tkz.hasNextToken()) break;
                 statement= ParseStatement();
-
             }
             if(tkz.hasNextToken()) {
                 while(tkz.hasNextToken())System.out.println(tkz.consume()+".");
@@ -37,7 +35,7 @@ public class Parser{
     }
 
     private Statement ParseStatement() throws SyntaxError {
-        Statement statement = null;
+        Statement statement;
             statement =ParseCommand();
             if(statement == null)statement =ParseBlockStatement();
             if(statement == null)statement =ParseIfStatement();
@@ -263,8 +261,8 @@ public class Parser{
 
     private boolean IsNotReservedWord(String str) {
         if(Character.isDigit(str.charAt(0))) return false;
-        for(int i =0; i< reservedword.length;i++){
-            if(reservedword[i].equals(str)) return false;
+        for (String s : reservedword) {
+            if (s.equals(str)) return false;
         }
         return true;
     }
