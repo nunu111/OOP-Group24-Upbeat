@@ -291,6 +291,9 @@ public class Command implements AllCommand {
             if(opp.deposit-value>=1){
                 opp.deposit -= value;
             }else {
+                for (int i = 0;i<lgame.listofplayer.length;i++){
+                    if(lgame.listofplayer[i].city_center.row==newRow&&lgame.listofplayer[i].city_center.col==newCol)lgame.listofplayer[i].lose=true;
+                }
                 opp.deposit = 0;
                 opp.owner = null;
 
