@@ -3,18 +3,13 @@ import AST.Expr;
 
 import java.util.Random;
 public class Command implements AllCommand {
-
     public Game lgame ;
     private static Command instance;
-
-    private Command(Game lgame){
-        this.lgame=lgame;
-    }
-    public static Command instance(Game lgame){
-        if(instance == null) instance = new Command(lgame);
+    private Command(){}
+    public static Command instance(){
+        if(instance == null) instance = new Command();
         return instance;
     }
-
     @Override
     public long GetRows() {
         return lgame.row;

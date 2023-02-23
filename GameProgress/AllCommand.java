@@ -5,8 +5,6 @@ public interface AllCommand {
         up,
         down,
         upleft,
-        right,
-        left,
         upright,
         downleft,
         downright

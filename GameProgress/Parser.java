@@ -95,12 +95,6 @@ public class Parser{
         else if(tkz.peek("upright")){
             tkz.consume();
             return AllCommand.Direction.upright;
-        }else if(tkz.peek("right")){
-            tkz.consume();
-            return AllCommand.Direction.right;
-        }else if(tkz.peek("left")){
-            tkz.consume();
-            return AllCommand.Direction.left;
         }
         else if(tkz.peek("downleft")){
             tkz.consume();

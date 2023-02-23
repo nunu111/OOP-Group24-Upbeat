@@ -18,12 +18,11 @@ class GameTest {
         FileReader file= FileReader.Instance();
         Game game1 = file.ParsingConfigFile("src/GameProgress/Configuration.txt");
         Command.instance().lgame = game1;
-        game1.AddPlayer(3,name);
-        PlanAST plan = file.ParsingPlayerFile("src/Test/SemiTest.txt");
+        Command.instance().lgame.AddPlayer(3,name);
+        PlanAST plan = file.ParsingPlayerFile("src/Test/Test.txt");
         plan.eval();
-        System.out.println(game1.cur_player);
-        System.out.println(Variable_Storage.instance().GetVariableMap());
-
+//        System.out.println(Command.instance().lgame.cur_player);
+//        System.out.println(Variable_Storage.instance().GetVariableMap());
     }
 
 }

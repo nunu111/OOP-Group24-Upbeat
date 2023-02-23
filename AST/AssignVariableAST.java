@@ -1,10 +1,10 @@
 package AST;
 
 public class AssignVariableAST implements Statement{
-    private String VarName;
-    private Expr VarValue;
+    private final String VarName;
+    private final Expr VarValue;
     private Variable_Storage assign = Variable_Storage.instance();
-    private String[] SpecialVariable ={"rows","cols","currow","curcol","budget","deposit","int","maxdeposit","random"};
+    private final String[] SpecialVariable ={"rows","cols","currow","curcol","budget","deposit","int","maxdeposit","random"};
     public AssignVariableAST(String _VarName,Expr _VarValue){
         this.VarName = _VarName;
         this.VarValue = _VarValue;
@@ -18,7 +18,6 @@ public class AssignVariableAST implements Statement{
     }
 
     public void eval() throws EvalError {
-
         if(IsNotSpecialVariable(VarName))assign.AssignVariable(VarName,VarValue);
     }
 }
