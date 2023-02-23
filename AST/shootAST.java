@@ -12,6 +12,6 @@ public class shootAST implements Statement{
     }
     @Override
     public void eval() throws EvalError {
-        Command.instance().shoot(dir);
+        Command.instance().shoot(dir, (long) ATKValue.eval(Variable_Storage.instance().GetVariableMap()));
     }
 }
