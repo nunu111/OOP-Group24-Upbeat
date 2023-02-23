@@ -22,22 +22,22 @@ public class Command implements AllCommand {
 
     @Override
     public long GetCurrow() {
-        return lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
+        return lgame.listofplayer[ lgame.cur_player].city_crew.row;
     }
 
     @Override
     public long GetCurcol() {
-        return lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
+        return lgame.listofplayer[ lgame.cur_player].city_crew.col;
     }
 
     @Override
     public long GetBudget() {
-        return lgame.listofplayer[(int) lgame.cur_player].budget;
+        return lgame.listofplayer[ lgame.cur_player].budget;
     }
 
     @Override
     public long GetDeposit() {
-        return (long) lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit;
+        return (long) lgame.listofplayer[ lgame.cur_player].city_crew.deposit;
     }
 
     @Override
@@ -61,8 +61,8 @@ public class Command implements AllCommand {
         long distance;
         long direction;
         Region opponent = null;
-        int Crewcol = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.col-1;
-        int Crewrow = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.row-1;
+        int Crewcol = (int) lgame.listofplayer[ lgame.cur_player].city_crew.col-1;
+        int Crewrow = (int) lgame.listofplayer[ lgame.cur_player].city_crew.row-1;
         long Maxrow =lgame.row-1;
         long Maxcol =lgame.col-1;
         boolean found_op = false;
@@ -188,11 +188,11 @@ public class Command implements AllCommand {
 
     @Override
     public void move(Direction dir) {
-        int Crewcol = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
-        int Crewrow = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
+        int Crewcol = (int) lgame.listofplayer[ lgame.cur_player].city_crew.col;
+        int Crewrow = (int) lgame.listofplayer[ lgame.cur_player].city_crew.row;
         int newCol = Crewcol;
         int newRow = Crewrow;
-        if(lgame.listofplayer[(int) lgame.cur_player].budget>=1){
+        if(lgame.listofplayer[ lgame.cur_player].budget>=1){
             if(dir.equals(Direction.up))newRow--;
             else if(dir.equals(Direction.down))newRow++;
             else if(Crewcol%2==1){
@@ -218,47 +218,48 @@ public class Command implements AllCommand {
                 }else if(dir.equals(Direction.upleft)){
                     newRow--;
                     newCol--;
-                }                
+                }
             }
             if(lgame.field[newRow][newCol].owner==null) {
-                lgame.listofplayer[(int) lgame.cur_player].budget--;
-                lgame.listofplayer[(int) lgame.cur_player].city_crew.row=newRow;
-                lgame.listofplayer[(int) lgame.cur_player].city_crew.col=newCol;
+                lgame.listofplayer[ lgame.cur_player].city_crew.row=newRow;
+                lgame.listofplayer[ lgame.cur_player].city_crew.col=newCol;
             }
+            lgame.listofplayer[ lgame.cur_player].budget--;
         }else done();
     }
 
     @Override
     public void invest(double value) {
-        lgame.listofplayer[(int) lgame.cur_player].budget--;
-        if(lgame.listofplayer[(int) lgame.cur_player].budget>=value){
-            lgame.listofplayer[(int) lgame.cur_player].budget-=value;
-            if(lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit+value<=lgame.max_dep)
-            lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit+=value;
-            else lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit = lgame.max_dep;
+        lgame.listofplayer[ lgame.cur_player].budget--;
+        if(lgame.listofplayer[ lgame.cur_player].budget>=value){
+            lgame.listofplayer[ lgame.cur_player].budget-=value;
+            lgame.field[(int) lgame.listofplayer[lgame.cur_player].city_crew.row][(int) lgame.listofplayer[lgame.cur_player].city_crew.col].owner=lgame.listofplayer[lgame.cur_player];
+            if(lgame.listofplayer[ lgame.cur_player].city_crew.deposit+value<=lgame.max_dep)
+            lgame.listofplayer[ lgame.cur_player].city_crew.deposit+=value;
+            else lgame.listofplayer[ lgame.cur_player].city_crew.deposit = lgame.max_dep;
         }
     }
 
     @Override
     public void collect(double value) {
-        if(lgame.listofplayer[(int) lgame.cur_player].budget<1) done();
+        if(lgame.listofplayer[ lgame.cur_player].budget<1) done();
         else {
-            lgame.listofplayer[(int) lgame.cur_player].budget--;
-            if(value<=lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit){
-                lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit-= value;
-                lgame.listofplayer[(int) lgame.cur_player].budget = (long) value;
-                if(value==lgame.listofplayer[(int) lgame.cur_player].city_crew.deposit) lgame.listofplayer[(int) lgame.cur_player].city_crew.owner = null;
+            lgame.listofplayer[ lgame.cur_player].budget--;
+            if(value<=lgame.listofplayer[ lgame.cur_player].city_crew.deposit){
+                lgame.listofplayer[ lgame.cur_player].city_crew.deposit-= value;
+                lgame.listofplayer[ lgame.cur_player].budget = (long) value;
+                if(value==lgame.listofplayer[ lgame.cur_player].city_crew.deposit) lgame.listofplayer[ lgame.cur_player].city_crew.owner = null;
             }
         }
     }
 
     @Override
     public void shoot(Direction dir,long value) {
-        int Crewcol = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
-        int Crewrow = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
+        int Crewcol = (int) lgame.listofplayer[ lgame.cur_player].city_crew.col;
+        int Crewrow = (int) lgame.listofplayer[ lgame.cur_player].city_crew.row;
         int newCol = Crewcol;
         int newRow = Crewrow;
-        if(lgame.listofplayer[(int) lgame.cur_player].budget-value>=1){
+        if(lgame.listofplayer[ lgame.cur_player].budget-value>=1){
             if(dir.equals(Direction.up))newRow--;
             else if(dir.equals(Direction.down))newRow++;
             else if(Crewcol%2==1){
@@ -286,7 +287,7 @@ public class Command implements AllCommand {
                     newCol--;
                 }
             }
-            lgame.listofplayer[(int) lgame.cur_player].budget -= value;
+            lgame.listofplayer[ lgame.cur_player].budget -= value;
             Region opp =lgame.field[newRow][newCol];
             if(opp.deposit-value>=1){
                 opp.deposit -= value;

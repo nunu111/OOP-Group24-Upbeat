@@ -8,7 +8,7 @@ public class Game {
     public long col;
     public long row;
     public Player[] listofplayer;
-    public long cur_player;
+    public int cur_player;
     public long init_plan_min;
     public long init_plan_sec;
     public long init_budget;
@@ -77,5 +77,6 @@ public class Game {
         if(cur_player<listofplayer.length) cur_player++;
         else cur_player=0;
     }
+
 
 }
