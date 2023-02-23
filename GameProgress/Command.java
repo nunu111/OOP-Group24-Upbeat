@@ -5,9 +5,11 @@ import java.util.Random;
 public class Command implements AllCommand {
     public Game lgame ;
     private static Command instance;
-    private Command(){}
-    public static Command instance(){
-        if(instance == null) instance = new Command();
+    private Command(Game lgame){
+        this.lgame=lgame;
+    }
+    public static Command instance(Game lgame){
+        if(instance == null) instance = new Command(lgame);
         return instance;
     }
     @Override
@@ -61,8 +63,10 @@ public class Command implements AllCommand {
         long distance;
         long direction;
         Region opponent = null;
-        int Crewcol = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
-        int Crewrow = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
+        int Crewcol = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.col-1;
+        int Crewrow = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.row-1;
+        long Maxrow =lgame.row-1;
+        long Maxcol =lgame.col-1;
         boolean found_op = false;
         if (Crewcol % 2 == 1) {
             int round = 1;
@@ -70,29 +74,29 @@ public class Command implements AllCommand {
             int j = 0;
             boolean[] checkEdge = {false,false,false,false,false,false};
             while (!found_op&&(!(checkEdge[0]&&checkEdge[1]&&checkEdge[2]&&checkEdge[3]&&checkEdge[4]&&checkEdge[5]))) {
-                if(indexAdjust(Crewrow - (round),lgame.row)==0) checkEdge[0]=true;
-                if(indexAdjust(Crewrow - (round - i),lgame.row)==0||indexAdjust(Crewcol + (round),lgame.col)== lgame.col) checkEdge[1]=true;
-                if(indexAdjust(Crewrow + (round - j),lgame.row)==lgame.row||indexAdjust(Crewcol + (round),lgame.col)== lgame.col) checkEdge[2]=true;
-                if(indexAdjust(Crewrow + (round),lgame.row)==0) checkEdge[3]=true;
-                if(indexAdjust(Crewrow + (round - j),lgame.row)==lgame.row||indexAdjust(Crewcol - (round),lgame.col)== lgame.col) checkEdge[4]=true;
-                if(indexAdjust(Crewrow - (round - i),lgame.row)==0||indexAdjust(Crewcol - (round),lgame.col)== lgame.col) checkEdge[5]=true;
+                if(indexAdjust(Crewrow - (round),Maxrow)==0) checkEdge[0]=true;
+                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol + (round),Maxcol)== Maxcol) checkEdge[1]=true;
+                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow||indexAdjust(Crewcol + (round),Maxcol)== Maxcol) checkEdge[2]=true;
+                if(indexAdjust(Crewrow + (round),Maxrow)==0) checkEdge[3]=true;
+                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow||indexAdjust(Crewcol - (round),Maxcol)== Maxcol) checkEdge[4]=true;
+                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol - (round),Maxcol)== Maxcol) checkEdge[5]=true;
 
-                if (lgame.field[indexAdjust(Crewrow - (round),lgame.row)][Crewcol].owner != null) {
+                if (lgame.field[indexAdjust(Crewrow - (round),Maxrow)][Crewcol].owner != null) {
                     opponent = lgame.field[Crewrow - (round)][Crewcol];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow - (round - i),lgame.row)][indexAdjust(Crewcol + (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow - (round - i),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow - (round - i)][Crewcol + (round)];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow + (round - j),lgame.row)][indexAdjust(Crewcol + (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow + (round - j),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow + (round - j)][Crewcol + (round)];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow + (round),lgame.row)][Crewcol].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow + (round),Maxrow)][Crewcol].owner != null) {
                     opponent = lgame.field[Crewrow + (round)][Crewcol];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow + (round - j),lgame.row)][indexAdjust(Crewcol - (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow + (round - j),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow + (round - j)][Crewcol - (round)];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow - (round - i),lgame.row)][indexAdjust(Crewcol - (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow - (round - i),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow - (round - i)][Crewcol - (round)];
                     found_op = true;
                 }
@@ -106,29 +110,29 @@ public class Command implements AllCommand {
             int j = 0;
             boolean[] checkEdge = {false,false,false,false,false,false};
             while (!found_op&&(!(checkEdge[0]&&checkEdge[1]&&checkEdge[2]&&checkEdge[3]&&checkEdge[4]&&checkEdge[5]))) {
-                if(indexAdjust(Crewrow - (round),lgame.row)==0) checkEdge[0]=true;
-                if(indexAdjust(Crewrow - (round - i),lgame.row)==0||indexAdjust(Crewcol + (round),lgame.col)== lgame.col) checkEdge[1]=true;
-                if(indexAdjust(Crewrow + (round - j),lgame.row)==lgame.row||indexAdjust(Crewcol + (round),lgame.col)== lgame.col) checkEdge[2]=true;
-                if(indexAdjust(Crewrow + (round),lgame.row)==0) checkEdge[3]=true;
-                if(indexAdjust(Crewrow + (round - j),lgame.row)==lgame.row||indexAdjust(Crewcol - (round),lgame.col)== lgame.col) checkEdge[4]=true;
-                if(indexAdjust(Crewrow - (round - i),lgame.row)==0||indexAdjust(Crewcol - (round),lgame.col)== lgame.col) checkEdge[5]=true;
+                if(indexAdjust(Crewrow - (round),Maxrow)==0) checkEdge[0]=true;
+                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol + (round),Maxcol)== Maxcol) checkEdge[1]=true;
+                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow||indexAdjust(Crewcol + (round),Maxcol)== Maxcol) checkEdge[2]=true;
+                if(indexAdjust(Crewrow + (round),Maxrow)==0) checkEdge[3]=true;
+                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow||indexAdjust(Crewcol - (round),Maxcol)== Maxcol) checkEdge[4]=true;
+                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol - (round),Maxcol)== Maxcol) checkEdge[5]=true;
 
-                if (lgame.field[indexAdjust(Crewrow - (round),lgame.row)][Crewcol].owner != null) {
+                if (lgame.field[indexAdjust(Crewrow - (round),Maxrow)][Crewcol].owner != null) {
                     opponent = lgame.field[Crewrow - (round)][Crewcol];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow - (round - j),lgame.row)][indexAdjust(Crewcol + (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow - (round - j),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow - (round - j)][Crewcol + (round)];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow + (round - i),lgame.row)][indexAdjust(Crewcol + (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow + (round - i),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow + (round - i)][Crewcol + (round)];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow + (round),lgame.row)][Crewcol].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow + (round),Maxrow)][Crewcol].owner != null) {
                     opponent = lgame.field[Crewrow + (round)][Crewcol];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow + (round - i),lgame.row)][indexAdjust(Crewcol - (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow + (round - i),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow + (round - i)][Crewcol - (round)];
                     found_op = true;
-                } else if (lgame.field[indexAdjust(Crewrow - (round - j),lgame.row)][indexAdjust(Crewcol - (round),lgame.col)].owner != null) {
+                } else if (lgame.field[indexAdjust(Crewrow - (round - j),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
                     opponent = lgame.field[Crewrow - (round - j)][Crewcol - (round)];
                     found_op = true;
                 }
@@ -218,12 +222,12 @@ public class Command implements AllCommand {
                     newCol--;
                 }                
             }
+            if(lgame.field[newRow][newCol].owner==null) {
+                lgame.listofplayer[(int) lgame.cur_player].budget--;
+                lgame.listofplayer[(int) lgame.cur_player].city_crew.row=newRow;
+                lgame.listofplayer[(int) lgame.cur_player].city_crew.col=newCol;
+            }
         }else done();
-        if(lgame.field[newRow][newCol].owner==null) {
-            lgame.listofplayer[(int) lgame.cur_player].budget--;
-            lgame.listofplayer[(int) lgame.cur_player].city_crew.row=newRow;
-            lgame.listofplayer[(int) lgame.cur_player].city_crew.col=newCol;
-        }
     }
 
     @Override
@@ -251,12 +255,12 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public void shoot(Direction dir) {
+    public void shoot(Direction dir,long value) {
         int Crewcol = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.col;
         int Crewrow = (int) lgame.listofplayer[(int) lgame.cur_player].city_crew.row;
         int newCol = Crewcol;
         int newRow = Crewrow;
-        if(lgame.listofplayer[(int) lgame.cur_player].budget>=1){
+        if(lgame.listofplayer[(int) lgame.cur_player].budget-value>=1){
             if(dir.equals(Direction.up))newRow--;
             else if(dir.equals(Direction.down))newRow++;
             else if(Crewcol%2==1){
@@ -284,12 +288,16 @@ public class Command implements AllCommand {
                     newCol--;
                 }
             }
+            lgame.listofplayer[(int) lgame.cur_player].budget -= value;
+            Region opp =lgame.field[newRow][newCol];
+            if(opp.deposit-value>=1){
+                opp.deposit -= value;
+            }else {
+                opp.deposit = 0;
+                opp.owner = null;
+
+            }
         }else done();
-        if(lgame.field[newRow][newCol].owner==null) {
-            lgame.listofplayer[(int) lgame.cur_player].budget--;
-            lgame.listofplayer[(int) lgame.cur_player].city_crew.row=newRow;
-            lgame.listofplayer[(int) lgame.cur_player].city_crew.col=newCol;
-        }
     }
 
     private int indexAdjust(long x,long max){

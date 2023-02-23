@@ -25,5 +25,5 @@ public interface AllCommand {
     public void move(Direction dir);
     public void invest(double value);
     public void collect(double value);
-    public void shoot(Direction dir);
+    public void shoot(Direction dir,long value);
 }

@@ -57,8 +57,8 @@ public class Game {
                     if(y == randMap[(int) j].row && x == randMap[(int) j].col ) check_locate_repeat=true;
                 }
             }while (check_locate_repeat);
-            randMap[(int) i].row = y;
-            randMap[(int) i].col = x;
+            randMap[(int) i].row = y+1;
+            randMap[(int) i].col = x+1;
             randMap[(int) i].AddDepositToCenter(init_deposit);
         }
         return randMap;
