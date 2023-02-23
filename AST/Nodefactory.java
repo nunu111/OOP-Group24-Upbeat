@@ -1,5 +1,7 @@
 package AST;
 
+import GameProgress.AllCommand;
+
 public class Nodefactory {
     private static Nodefactory instance;
     private Nodefactory(){}
@@ -15,4 +17,20 @@ public class Nodefactory {
     public BinaryArithAST DivideExpr(Expr f1, Expr l1){return new BinaryArithAST(f1,"/",l1);}
     public BinaryArithAST ModExpr(Expr f1, Expr l1){return new BinaryArithAST(f1,"%",l1);}
     public BinaryArithAST PowExpr(Expr f1, Expr l1){return new BinaryArithAST(f1,"^",l1);}
+    public AssignVariableAST AssignVariable(String _assign_var,Expr _var_value){return new AssignVariableAST(_assign_var,_var_value);}
+    public doneAST done(){return new doneAST();}
+    public relocateAST relocate(){return new relocateAST();}
+    public moveAST move(AllCommand.Direction dir){return new moveAST(dir);}
+    public investAST invest(Expr value){return new investAST(value);}
+    public collectAST collect(Expr value){return new collectAST(value);}
+    public shootAST shoot(AllCommand.Direction dir,Expr value){return new shootAST(dir,value);}
+    public LongAST Long(long value){return new LongAST(value);}
+    public VariableAST Variable(String var){return new VariableAST(var);}
+    public opponentAST opponent(){return new opponentAST();}
+    public nearbyAST nearby(AllCommand.Direction dir){return new nearbyAST(dir);}
+    public IfElseAST IfElse(Expr condition,Statement ifStatement,Statement elseStatement){return new IfElseAST(condition,ifStatement,elseStatement);}
+    public WhileAST While(Expr condition,Statement Body){return new WhileAST(condition,Body);}
+    public PlanAST Plan(){return new PlanAST();}
+    public BlockStatementAST BlockStatement(){return new BlockStatementAST();}
+
 }
