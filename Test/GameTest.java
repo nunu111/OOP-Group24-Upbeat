@@ -17,8 +17,8 @@ class GameTest {
         String[] name = {"Nu","Fifa","Bogey"};
         FileReader file= FileReader.Instance();
         Game game1 = file.ParsingConfigFile("src/GameProgress/Configuration.txt");
-        Command com=Command.instance(game1);
-        com.lgame.AddPlayer(3,name);
+        Command.instance();
+        Command.instance().lgame.AddPlayer(3,name);
         PlanAST plan = file.ParsingPlayerFile("src/Test/Test.txt");
         plan.eval();
 //        System.out.println(Command.instance().lgame.cur_player);
