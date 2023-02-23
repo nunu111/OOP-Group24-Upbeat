@@ -73,6 +73,9 @@ public class Game {
     public Player GetCurrentPlayer(){
         return listofplayer[(int)cur_player];
     }
-    //    void newTurn()
+    void newTurn(){
+        if(cur_player<listofplayer.length) cur_player++;
+        else cur_player=0;
+    }
 
 }
