@@ -30,7 +30,7 @@ public class Game {
         this.init_budget = init_budget;
         for(int i = 0 ; i < row ; i++){
             for(int j = 0; j < col ; j++){
-                this.field[i][j] = new Region(i+1,j+1);
+                this.field[i][j] = new Region(i,j);
             }
         }
         this.rev_cost = rev_cost;
@@ -57,8 +57,8 @@ public class Game {
                     if(y == randMap[(int) j].row && x == randMap[(int) j].col ) check_locate_repeat=true;
                 }
             }while (check_locate_repeat);
-            randMap[(int) i].row = y+1;
-            randMap[(int) i].col = x+1;
+            randMap[(int) i].row = y;
+            randMap[(int) i].col = x;
             randMap[(int) i].AddDepositToCenter(init_deposit);
         }
         return randMap;
