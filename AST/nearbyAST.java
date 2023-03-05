@@ -15,4 +15,10 @@ public class nearbyAST implements Expr{
     public double eval(Map<String, Double> binding) throws EvalError {
         return Command.instance().opponent();
     }
+
+    @Override
+    public void prettyPrint(StringBuilder sb) {
+        sb.append("nearby");
+        sb.append(dir.toString());
+    }
 }

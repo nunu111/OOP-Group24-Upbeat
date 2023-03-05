@@ -2,18 +2,26 @@ package AST;
 
 import java.util.ArrayList;
 
-public class BlockStatementAST implements BodyStatement{
+public class BlockStatementAST implements Statement{
     private final ArrayList<Statement> AllBodyStatement;
 
-    public BlockStatementAST(){
+    public BlockStatementAST(ArrayList<Statement> _AllBodyStatement){
         this.AllBodyStatement = new ArrayList<>();
-    }
-    @Override
-    public void StatementUpdate(Statement _Statement) {
-        this.AllBodyStatement.add(_Statement);
+        AllBodyStatement.addAll(_AllBodyStatement);
     }
     @Override
     public void eval() throws EvalError {
         for(Statement key : AllBodyStatement) key.eval();
+    }
+
+    @Override
+    public void prettyPrint(StringBuilder sb) {
+        sb.append("{\n");
+        for(Statement key : AllBodyStatement) {
+            sb.append("\t");
+            key.prettyPrint(sb);
+        }
+        sb.append("}");
+
     }
 }

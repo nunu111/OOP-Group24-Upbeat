@@ -2,6 +2,8 @@ package AST;
 
 import GameProgress.AllCommand;
 
+import java.util.ArrayList;
+
 public class Nodefactory {
     private static Nodefactory instance;
     private Nodefactory(){}
@@ -30,7 +32,7 @@ public class Nodefactory {
     public nearbyAST nearby(AllCommand.Direction dir){return new nearbyAST(dir);}
     public IfElseAST IfElse(Expr condition,Statement ifStatement,Statement elseStatement){return new IfElseAST(condition,ifStatement,elseStatement);}
     public WhileAST While(Expr condition,Statement Body){return new WhileAST(condition,Body);}
-    public PlanAST Plan(){return new PlanAST();}
-    public BlockStatementAST BlockStatement(){return new BlockStatementAST();}
+    public PlanAST Plan(ArrayList<Statement> StatementContainer){return new PlanAST(StatementContainer);}
+    public BlockStatementAST BlockStatement(ArrayList<Statement> StatementContainer){return new BlockStatementAST(StatementContainer);}
 
 }

@@ -12,4 +12,11 @@ public class moveAST implements Statement{
     public void eval() throws EvalError {
         Command.instance().move(dir);
     }
+
+    @Override
+    public void prettyPrint(StringBuilder sb) {
+        sb.append("move ");
+        sb.append(dir.toString());
+        sb.append("\n");
+    }
 }

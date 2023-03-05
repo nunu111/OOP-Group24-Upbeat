@@ -2,16 +2,19 @@ package AST;
 
 import java.util.ArrayList;
 
-public class PlanAST implements BodyStatement{
+public class PlanAST implements Statement{
     private final ArrayList<Statement> AllStatement;
-    public PlanAST(){
+    public PlanAST(ArrayList<Statement> _AllStatement ){
         AllStatement = new ArrayList<>();
-    }
-    public void StatementUpdate(Statement _AllStatement){
-        this.AllStatement.add(_AllStatement);
+        AllStatement.addAll(_AllStatement);
     }
     @Override
     public void eval() throws EvalError {
         for(Statement key : AllStatement) key.eval();
+    }
+
+    @Override
+    public void prettyPrint(StringBuilder sb) {
+        for(Statement key : AllStatement) key.prettyPrint(sb);
     }
 }
