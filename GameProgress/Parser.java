@@ -2,50 +2,57 @@ package GameProgress;
 
 import AST.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 
 public class Parser{
-    private final String[] ReservedWord = {"collect","done","down","downleft","downright","else","if","invest","{","}","(",")"
-            ,"move","nearby","opponent","relocate","shoot","then","up","upleft","upright","while",};
-    private final String[] SpecialVariable ={"rows","cols","currow","curcol","budget","deposit","int","maxdeposit","random"};
+    private final HashSet<String> ReservedWordSet;
+    private final HashSet<String> SpecialVariableSet;
     private final Nodefactory NodeCreate= Nodefactory.instance();
     private final Tokenizer tkz;
 
     public Parser(Tokenizer _tkz){
         this.tkz = _tkz;
+        ReservedWordSet = new HashSet<>();
+        SpecialVariableSet = new HashSet<>();
+        ReservedWordSet.addAll(Arrays.asList("collect", "done", "down", "downleft", "downright", "else", "if", "invest", "{", "}", "(", ")"
+                                , "move", "nearby", "opponent", "relocate", "shoot", "then", "up", "upleft", "upright", "while"));
+        SpecialVariableSet.addAll(Arrays.asList("rows", "cols", "currow", "curcol", "budget", "deposit", "int", "maxdeposit", "random"));
     }
 
     public PlanAST PlanParser() throws SyntaxError {
         if(!tkz.hasNextToken()) throw new NoSuchElementException("Plan doesn't have element");
         Statement statement= ParseStatement();
-        if(statement == null) throw new NoSuchElementException("Plan don't have element");
-        else{
-            PlanAST plan = NodeCreate.Plan();
-            while(statement != null ){
-                plan.StatementUpdate(statement);
-                if(!tkz.hasNextToken()) break;
-                statement= ParseStatement();
-            }
-            if(tkz.hasNextToken()) {
-                while(tkz.hasNextToken())System.out.println(tkz.consume()+".");
-                throw new SyntaxError("leftover token");
-            }
-            return plan;
+        ArrayList<Statement> StatementContainer = new ArrayList<>();
+        while(statement != null ){
+            StatementContainer.add(statement);
+            if(!tkz.hasNextToken()) break;
+            statement= ParseStatement();
         }
+        PlanAST plan = NodeCreate.Plan(StatementContainer);
+        if(tkz.hasNextToken()) {
+            while(tkz.hasNextToken())System.out.println(tkz.consume()+".");
+            throw new SyntaxError("leftover token");
+        }
+        return plan;
     }
 
     private Statement ParseStatement() throws SyntaxError {
-        Statement statement;
-            statement =ParseCommand();
-            if(statement == null)statement =ParseBlockStatement();
-            if(statement == null)statement =ParseIfStatement();
-            if(statement == null)statement = ParseWhileStatement();
+        Statement statement=null;
+        if(tkz.peek("done") || tkz.peek("relocate") || tkz.peek("move") ||tkz.peek("invest")|| tkz.peek("collect") || tkz.peek("shoot") ||
+                (IsNotReservedWord(tkz.peek()) && IsNotSpecialVariable(tkz.peek()))) statement =ParseCommand();
+        else if(tkz.peek("{")) statement = ParseBlockStatement();
+        else if(tkz.peek("if")) statement =ParseIfStatement();
+        else if(tkz.peek("while"))statement = ParseWhileStatement();
         return statement;
     }
 
     private Statement ParseCommand() throws SyntaxError {
-        Statement statement =ParseAssignmentStatement();
-        if(statement == null) statement =ParseActionCommand();
+        Statement statement =null;
+        if(IsNotReservedWord(tkz.peek()) && IsNotSpecialVariable(tkz.peek())) statement =ParseAssignmentStatement();
+        else if(tkz.peek("done") || tkz.peek("relocate") || tkz.peek("move") ||tkz.peek("invest")|| tkz.peek("collect") || tkz.peek("shoot")) statement =ParseActionCommand();
         return statement;
     }
     private Statement ParseAssignmentStatement() throws SyntaxError {
@@ -56,7 +63,7 @@ public class Parser{
         }else return null;
     }
     private Statement ParseActionCommand() throws SyntaxError {
-        Statement statement;
+        Statement statement=null;
         if(tkz.peek("done")){
             tkz.consume();
             statement = NodeCreate.done();
@@ -65,19 +72,21 @@ public class Parser{
             tkz.consume();
             statement = NodeCreate.relocate();
         }
-        else {
+        else if(tkz.peek("move")){
+            tkz.consume();
             statement =ParseMoveCommand();
-            if(statement == null) statement =ParseRegionCommand();
-            if(statement == null) statement =ParseAttackCommand();
+        }
+        else if(tkz.peek("invest")||tkz.peek("collect")) {
+            statement =ParseRegionCommand();
+        }
+        else if(tkz.peek("shoot")) {
+            tkz.consume();
+            statement =ParseAttackCommand();
         }
         return statement;
     }
     private moveAST ParseMoveCommand() throws SyntaxError {
-        if(tkz.peek("move")){
-            tkz.consume();
-            return NodeCreate.move(ParseDirection());
-        }
-        return null;
+        return NodeCreate.move(ParseDirection());
     }
     private AllCommand.Direction ParseDirection() throws SyntaxError {
         if(tkz.peek("up")){
@@ -113,25 +122,21 @@ public class Parser{
         }else if(tkz.peek("collect")){
             tkz.consume();
             return NodeCreate.collect(ParseExpression());
-        }
-        return null;
+        }else return null;
     }
     private Statement ParseAttackCommand() throws SyntaxError {
-        if(tkz.peek("shoot")){
-            tkz.consume();
-            return NodeCreate.shoot(ParseDirection(),ParseExpression());
-        }else return null;
+        return NodeCreate.shoot(ParseDirection(),ParseExpression());
     }
     private Statement ParseBlockStatement() throws SyntaxError {
         if(tkz.peek("{")){
             tkz.consume();
             Statement statement = ParseStatement();
-            BodyStatement Body = NodeCreate.BlockStatement();
+            ArrayList<Statement> statementContainer = new ArrayList<>();
             while(statement != null){
-                Body.StatementUpdate(statement);
-                if(!tkz.hasNextToken()) break;
+                statementContainer.add(statement);
                 statement = ParseStatement();
             }
+            Statement Body = NodeCreate.BlockStatement(statementContainer);
             tkz.consume("}");
             return Body;
         }else return null;
@@ -191,17 +196,15 @@ public class Parser{
         }
         return F;
     }
-    private Expr ParseFactor() throws SyntaxError { //Pass
+    private Expr ParseFactor() throws SyntaxError {
         Expr P = ParsePower();
         while (tkz.peek("^")){
-            if(tkz.peek("^")) {
-                tkz.consume();
-                P = NodeCreate.PowExpr(P,ParseTerm());
-            }
+            tkz.consume();
+            P = NodeCreate.PowExpr(P,ParsePower());
         }
         return P;
     }
-    private Expr ParsePower() throws SyntaxError { //Pass
+    private Expr ParsePower() throws SyntaxError {
         if(isNumber(tkz.peek())){
             return NodeCreate.Long(Long.parseLong(tkz.consume()));
         }else if (tkz.peek("rows")){
@@ -230,7 +233,7 @@ public class Parser{
             return NodeCreate.Long(Command.instance().GetMaxDeposit());
         }else if (tkz.peek("random")) {
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetRandom()); // do on purpose
+            return NodeCreate.Long(Command.instance().GetRandom());
         }else if(IsNotReservedWord(tkz.peek())){
             return NodeCreate.Variable(tkz.consume());
         }else if(tkz.peek("(")){
@@ -241,7 +244,7 @@ public class Parser{
         }else return ParseInfoExpression();
     }
 
-    private Expr ParseInfoExpression() throws SyntaxError { //Pass
+    private Expr ParseInfoExpression() throws SyntaxError {
         if(tkz.peek("opponent")){
             tkz.consume();
             return NodeCreate.opponent();
@@ -253,17 +256,10 @@ public class Parser{
     }
 
     private boolean IsNotReservedWord(String str) {
-        if(Character.isDigit(str.charAt(0))) return false;
-        for (String s : ReservedWord) {
-            if (s.equals(str)) return false;
-        }
-        return true;
+        return !ReservedWordSet.contains(str);
     }
     private boolean IsNotSpecialVariable(String str){
-        for(String key :SpecialVariable) {
-            if(key.equals(str)) return false;
-        }
-        return true;
+        return !SpecialVariableSet.contains(str);
     }
     private boolean isNumber(String str){
         try{
