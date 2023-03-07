@@ -58,116 +58,46 @@ public class Command implements AllCommand {
 
     @Override
     public long opponent() {
-        long distance;
-        long direction;
-        Region opponent = null;
-        int Crewcol = (int) game.ListOfPlayer[ game.cur_player].city_crew.col;
-        int Crewrow = (int) game.ListOfPlayer[ game.cur_player].city_crew.row;
-        long Maxrow = game.row;
-        long Maxcol = game.col;
-        boolean found_op = false;
-        if (Crewcol % 2 == 1) {
-            int round = 1;
-            int i = 1;
-            int j = 0;
-            boolean[] checkEdge = {false,false,false,false,false,false};
-            while (!found_op&&(!(checkEdge[0]&&checkEdge[1]&&checkEdge[2]&&checkEdge[3]&&checkEdge[4]&&checkEdge[5]))) {
-                if(indexAdjust(Crewrow - (round),Maxrow)==0) checkEdge[0]=true;
-                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol + (round),Maxcol)== Maxcol-1) checkEdge[1]=true;
-                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow-1||indexAdjust(Crewcol + (round),Maxcol)== Maxcol-1) checkEdge[2]=true;
-                if(indexAdjust(Crewrow + (round),Maxrow)==Maxrow-1) checkEdge[3]=true;
-                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow-1||indexAdjust(Crewcol - (round),Maxcol)== 0) checkEdge[4]=true;
-                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol - (round),Maxcol)== 0) checkEdge[5]=true;
-
-                if (game.field[indexAdjust(Crewrow - (round),Maxrow)][Crewcol].owner != null) {
-                    opponent = game.field[Crewrow - (round)][Crewcol];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow - (round - i),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow - (round - i)][Crewcol + (round)];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow + (round - j),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow + (round - j)][Crewcol + (round)];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow + (round),Maxrow)][Crewcol].owner != null) {
-                    opponent = game.field[Crewrow + (round)][Crewcol];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow + (round - j),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow + (round - j)][Crewcol - (round)];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow - (round - i),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow - (round - i)][Crewcol - (round)];
-                    found_op = true;
-                }
-                if ((round % 2) == 0) i++;
-                else j++;
-                round++;
+        Region[] CityCrewPartner = game.ListOfPlayer[game.cur_player].city_crew.PartnerRegion;
+        Player CurrentPlayer = game.ListOfPlayer[game.cur_player];
+        Region[] CheckOpponent = {CityCrewPartner[0],CityCrewPartner[1],CityCrewPartner[2],
+                CityCrewPartner[3],CityCrewPartner[4],CityCrewPartner[5]};
+        int returnValue =11;
+        while(CheckOpponent[0] !=null || CheckOpponent[1] !=null || CheckOpponent[2] !=null || CheckOpponent[3] !=null || CheckOpponent[4] !=null || CheckOpponent[5] !=null){
+            if(CheckOpponent[0] != null) {
+                if(CheckOpponent[0].hasOwner() && CheckOpponent[0].owner != CurrentPlayer )return returnValue;
+                else CheckOpponent[0] = CheckOpponent[0].PartnerRegion[0];
             }
-        } else {
-            int round = 1;
-            int i = 1;
-            int j = 0;
-            boolean[] checkEdge = {false,false,false,false,false,false};
-            while (!found_op&&(!(checkEdge[0]&&checkEdge[1]&&checkEdge[2]&&checkEdge[3]&&checkEdge[4]&&checkEdge[5]))) {
-                if(indexAdjust(Crewrow - (round),Maxrow)==0) checkEdge[0]=true;
-                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol + (round),Maxcol)== Maxcol-1) checkEdge[1]=true;
-                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow-1||indexAdjust(Crewcol + (round),Maxcol)== Maxcol-1) checkEdge[2]=true;
-                if(indexAdjust(Crewrow + (round),Maxrow)==Maxrow-1) checkEdge[3]=true;
-                if(indexAdjust(Crewrow + (round - j),Maxrow)==Maxrow-1||indexAdjust(Crewcol - (round),Maxcol)== 0) checkEdge[4]=true;
-                if(indexAdjust(Crewrow - (round - i),Maxrow)==0||indexAdjust(Crewcol - (round),Maxcol)== 0) checkEdge[5]=true;
+            returnValue +=1;
+            if(CheckOpponent[1] != null){
+                if(CheckOpponent[1].hasOwner() && CheckOpponent[1].owner != CurrentPlayer ) return returnValue;
+                else CheckOpponent[1] = CheckOpponent[1].PartnerRegion[1];
 
-                if (game.field[indexAdjust(Crewrow - (round),Maxrow)][Crewcol].owner != null) {
-                    opponent = game.field[Crewrow - (round)][Crewcol];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow - (round - j),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow - (round - j)][Crewcol + (round)];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow + (round - i),Maxrow)][indexAdjust(Crewcol + (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow + (round - i)][Crewcol + (round)];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow + (round),Maxrow)][Crewcol].owner != null) {
-                    opponent = game.field[Crewrow + (round)][Crewcol];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow + (round - i),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow + (round - i)][Crewcol - (round)];
-                    found_op = true;
-                } else if (game.field[indexAdjust(Crewrow - (round - j),Maxrow)][indexAdjust(Crewcol - (round),Maxcol)].owner != null) {
-                    opponent = game.field[Crewrow - (round - j)][Crewcol - (round)];
-                    found_op = true;
-                }
-                if ((round % 2) == 0) i++;
-                else j++;
-                round++;
             }
+            returnValue +=1;
+            if(CheckOpponent[2] != null){
+                if(CheckOpponent[2].hasOwner() && CheckOpponent[2].owner != CurrentPlayer ) return returnValue;
+                else CheckOpponent[2] = CheckOpponent[2].PartnerRegion[2];
+            }
+            returnValue +=1;
+            if(CheckOpponent[3] != null){
+                if(CheckOpponent[3].hasOwner() && CheckOpponent[3].owner != CurrentPlayer) return returnValue;
+                else CheckOpponent[3] = CheckOpponent[3].PartnerRegion[3];
+
+            }
+            returnValue +=1;
+            if(CheckOpponent[4] != null){
+                if(CheckOpponent[4].hasOwner() && CheckOpponent[4].owner != CurrentPlayer) return returnValue;
+                else CheckOpponent[4] = CheckOpponent[4].PartnerRegion[4];
+            }
+            returnValue +=1;
+            if(CheckOpponent[5] != null){
+                if(CheckOpponent[5].hasOwner() && CheckOpponent[5].owner != CurrentPlayer) return returnValue;
+                else CheckOpponent[5] = CheckOpponent[5].PartnerRegion[5];
+            }
+            returnValue += 5;
         }
-            if (opponent==null) {
-                if (Crewcol == opponent.col) {
-                    distance = Math.abs(Crewrow - opponent.row);
-                    if (Crewrow >= opponent.row) direction = 1;
-                    else direction = 4;
-                } else {
-                    distance = Math.abs(Crewcol - opponent.col);
-                    if (Crewcol >= opponent.col) {
-                        if (Crewcol % 2 == 1) {
-                            if (opponent.row > Crewrow) direction = 3;
-                            else direction = 2;
-                        } else {
-                            if (opponent.row >= Crewrow) direction = 3;
-                            else direction = 2;
-                        }
-                    } else {
-                        if (Crewcol % 2 == 1) {
-                            if (opponent.row > Crewrow) direction = 5;
-                            else direction = 6;
-                        } else {
-                            if (opponent.row >= Crewrow) direction = 5;
-                            else direction = 6;
-                        }
-                    }
-                }
-            } else {
-                return 0;
-            }
-            return distance * 10 + direction;
+        return 0;
     }
 
 
