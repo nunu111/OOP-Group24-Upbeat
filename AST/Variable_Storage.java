@@ -1,7 +1,6 @@
 package AST;
 
 import GameProgress.Command;
-import GameProgress.Player;
 
 import java.util.HashMap;
 
@@ -12,8 +11,8 @@ public class Variable_Storage {
     private Command findPlayer = Command.instance();
 
     private Variable_Storage(){
-        this.PlayerVariable = new HashMap[Command.instance().lgame.listofplayer.length];
-        for(int i =0; i < Command.instance().lgame.listofplayer.length ;i++)
+        this.PlayerVariable = new HashMap[Command.instance().game.ListOfPlayer.length];
+        for(int i = 0; i < Command.instance().game.ListOfPlayer.length ; i++)
         this.PlayerVariable[i] = new HashMap<>();
     }
     public static Variable_Storage instance(){
@@ -24,17 +23,17 @@ public class Variable_Storage {
     }
 
     public void AssignVariable(String _VarName,Expr _VarValue) throws EvalError {
-        int curr_player = (int)findPlayer.lgame.cur_player;
+        int curr_player = findPlayer.game.cur_player;
         PlayerVariable[curr_player].put(_VarName,_VarValue.eval(PlayerVariable[curr_player]));
     }
     public void AssignVariable(String _VarName,double _VarValue){
-        int curr_player = (int)findPlayer.lgame.cur_player;
+        int curr_player = findPlayer.game.cur_player;
         PlayerVariable[curr_player].put(_VarName,_VarValue);
     }
     public double GetVariableValue(String key){
-        return PlayerVariable[(int)findPlayer.lgame.cur_player].get(key);
+        return PlayerVariable[findPlayer.game.cur_player].get(key);
     }
     public HashMap<String,Double> GetVariableMap(){
-        return PlayerVariable[(int)findPlayer.lgame.cur_player];
+        return PlayerVariable[findPlayer.game.cur_player];
     }
 }
