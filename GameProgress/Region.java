@@ -13,7 +13,9 @@ public class Region {
         this.deposit = 0;
         PartnerRegion = new Region[]{null,null,null,null,null,null};
     }
-
+    public boolean hasOwner(){
+        return owner != null;
+    }
     /**
      *
      * @param Partner Region that want to add
