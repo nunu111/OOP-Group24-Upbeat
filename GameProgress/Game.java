@@ -1,13 +1,12 @@
 package GameProgress;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class Game {
     public Region[][] field;
     public long col;
     public long row;
-    public Player[] listofplayer;
+    public Player[] ListOfPlayer;
     public int cur_player;
     public long init_plan_min;
     public long init_plan_sec;
@@ -33,6 +32,7 @@ public class Game {
                 this.field[i][j] = new Region(i,j);
             }
         }
+        ArrayToHexagonGrid.Refactor().ArrayTOHex(this.field,(int)row,(int)col);
         this.rev_cost = rev_cost;
         this.interest_pct = interest_pct;
         this.max_dep = max_dep;
@@ -64,17 +64,17 @@ public class Game {
         return randMap;
     }
     public void AddPlayer( long Num_p, String[] name){
-        this.listofplayer = new Player[(int) Num_p];
+        this.ListOfPlayer = new Player[(int) Num_p];
         Region[] city_center = RandomMap(this.row,this.col,Num_p,init_center_dep);
         for (int i = 0 ; i < Num_p ; i++){
-            this.listofplayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
+            this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
         }
     }
     public Player GetCurrentPlayer(){
-        return listofplayer[(int)cur_player];
+        return ListOfPlayer[(int)cur_player];
     }
     void newTurn(){
-        if(cur_player<listofplayer.length) cur_player++;
+        if(cur_player< ListOfPlayer.length) cur_player++;
         else cur_player=0;
     }
 
