@@ -1,5 +1,6 @@
 package GameProgress;
 
+import java.util.HashSet;
 import java.util.Random;
 
 public class Game {
@@ -41,27 +42,20 @@ public class Game {
         this.plan_rev_min = plan_rev_min;
         this.plan_rev_sec = plan_rev_sec;
     }
-    private Region[] RandomMap(long row, long col,long Num,long init_deposit){
+    private Region[] RandomMap(long row, long col,long PlayerNum,long init_deposit){
         Random rand = new Random();
-        Region[] randMap = new Region[(int) Num];
-        for(long i = 0 ; i < Num ; i++){
-            boolean check_locate_repeat = false;
-            randMap[(int) i] = new Region(0,0);
-            long y = 0;
-            long x = 0;
-            do{
-                check_locate_repeat = false;
+        HashSet<Region> randMap = new HashSet<>();
+        for(int i =0;i<PlayerNum;i++){
+            long x = rand.nextLong(col);
+            long y = rand.nextLong(row);
+            while(randMap.contains(field[(int) y][(int) x])){
                 y = rand.nextLong(row);
                 x = rand.nextLong(col);
-                for (long j = 0 ; j < i ; j++){
-                    if(y == randMap[(int) j].row && x == randMap[(int) j].col ) check_locate_repeat=true;
-                }
-            }while (check_locate_repeat);
-            randMap[(int) i].row = y;
-            randMap[(int) i].col = x;
-            randMap[(int) i].AddDepositToCenter(init_deposit);
+            }
+            field[(int)y][(int)x].AddDepositToCenter(init_deposit);
+            randMap.add(field[(int)y][(int)x]);
         }
-        return randMap;
+        return randMap.toArray(new Region[0]);
     }
     public void AddPlayer( long Num_p, String[] name){
         this.ListOfPlayer = new Player[(int) Num_p];
@@ -71,7 +65,7 @@ public class Game {
         }
     }
     public Player GetCurrentPlayer(){
-        return ListOfPlayer[(int)cur_player];
+        return ListOfPlayer[cur_player];
     }
     void newTurn(){
         if(cur_player< ListOfPlayer.length) cur_player++;
