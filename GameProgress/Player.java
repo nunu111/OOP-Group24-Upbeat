@@ -6,7 +6,7 @@ public class Player {
     protected String name;
     protected long budget;
     protected Region city_center;
-    protected Region city_crew;
+    public Region city_crew;
     protected boolean lose;
 
     public Player(String name, long budget, Region city_center, Region city_crew){
@@ -14,6 +14,8 @@ public class Player {
         this.budget = budget;
         this.city_center = city_center;
         this.city_crew = city_crew;
+        this.city_center.owner = this;
+        this.city_crew.owner =this;
         this.lose = false;
     }
 
