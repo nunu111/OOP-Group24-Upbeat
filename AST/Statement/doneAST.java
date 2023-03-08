@@ -1,8 +1,10 @@
-package AST;
+package AST.Statement;
 
+import AST.EvalError;
+import AST.Statement.Statement;
 import GameProgress.Command;
 
-public class doneAST implements Statement{
+public class doneAST implements Statement {
     public doneAST(){
     }
 

@@ -32,17 +32,24 @@ public class Command implements AllCommand {
 
     @Override
     public long GetBudget() {
-        return game.ListOfPlayer[game.cur_player].budget;
+        return (long)game.ListOfPlayer[game.cur_player].budget;
     }
 
     @Override
-    public long GetDeposit() { // Problem (┬┬﹏┬┬)
-        return (long) game.ListOfPlayer[game.cur_player].city_crew.deposit;
+    public long GetDeposit() {
+        long Deposit = (long) game.ListOfPlayer[game.cur_player].city_crew.deposit;
+        if(!game.ListOfPlayer[game.cur_player].city_crew.hasOwner()) Deposit*= -1;
+        return Deposit;
     }
 
     @Override
     public long GetInterest() { // Problem (┬┬﹏┬┬)
-        return (long) game.interest_pct;
+        Region CurrentRegion = game.ListOfPlayer[game.cur_player].city_crew;
+        double d=  CurrentRegion.deposit;
+        double b = (double) game.interest_pct;
+        double t = game.Turn;
+        double r = b*Math.log10(d) *(Math.log(t));
+        return (long)r;
     }
 
     @Override
@@ -139,7 +146,7 @@ public class Command implements AllCommand {
         long distance = ShortestPathUnweighted.findShortest().shortestPath(CityCenter,CityCrew);
         if(distance != -1) {
             long travelValue = 5*distance+10;
-            if( CityCrew.owner.equals(CurrentPlayer) && CurrentPlayer.budget >= travelValue){
+            if( CityCrew.hasOwner() && CityCrew.owner.equals(CurrentPlayer) && CurrentPlayer.budget >= travelValue){
                 CurrentPlayer.budget -= travelValue;
             }
         }
@@ -161,36 +168,40 @@ public class Command implements AllCommand {
         Player CurrentPlayer = game.ListOfPlayer[game.cur_player];
         if(CurrentPlayer.budget >=1){
             CurrentPlayer.budget--;
-            if(CityCrewDirectionPartner !=null &&( !CityCrewDirectionPartner.hasOwner() || CityCrewDirectionPartner.owner.equals(CurrentPlayer) )){
-                CurrentPlayer.city_crew.owner = null;
+            if(CityCrewDirectionPartner != null &&( !CityCrewDirectionPartner.hasOwner() || CityCrewDirectionPartner.owner.equals(CurrentPlayer) )){
+//                CurrentPlayer.city_crew.owner = null;
                 CurrentPlayer.city_crew = CityCrewDirectionPartner;
-                CurrentPlayer.city_crew.owner = CurrentPlayer;
+//                CurrentPlayer.city_crew.owner = CurrentPlayer;
             }
         }else return done();
         return false;
     }
 
     @Override
-    public void invest(long value) {
-        game.ListOfPlayer[ game.cur_player].budget--;
-        if(game.ListOfPlayer[ game.cur_player].budget>=value){
-            game.ListOfPlayer[ game.cur_player].budget-=value;
-            game.field[(int) game.ListOfPlayer[game.cur_player].city_crew.row()][(int) game.ListOfPlayer[game.cur_player].city_crew.col()].owner= game.ListOfPlayer[game.cur_player];
-            if(game.ListOfPlayer[ game.cur_player].city_crew.deposit+value<= game.max_dep)
-            game.ListOfPlayer[ game.cur_player].city_crew.deposit+=value;
-            else game.ListOfPlayer[ game.cur_player].city_crew.deposit = game.max_dep;
-        }
+    public boolean invest(long value) {
+        Player CurrentPlayer = game.ListOfPlayer[game.cur_player];
+        if(CurrentPlayer.budget >= 1) {
+            CurrentPlayer.budget--;
+            if(CurrentPlayer.budget >= value){
+                CurrentPlayer.budget -= value;
+                if(CurrentPlayer.city_crew.deposit+value > game.max_dep) CurrentPlayer.city_crew.deposit = game.max_dep;
+                else CurrentPlayer.city_crew.deposit+=value;
+                CurrentPlayer.city_crew.owner = CurrentPlayer;
+            }
+            return false;
+        }else return done();
     }
 
     @Override
     public boolean collect(long value) {
-        if(game.ListOfPlayer[ game.cur_player].budget<1) return done();
+        Player CurrentPlayer = game.ListOfPlayer[game.cur_player];
+        if(CurrentPlayer.budget < 1) return done();
         else {
-            game.ListOfPlayer[ game.cur_player].budget--;
-            if(value<= game.ListOfPlayer[ game.cur_player].city_crew.deposit){
-                game.ListOfPlayer[ game.cur_player].city_crew.deposit-= value;
-                game.ListOfPlayer[ game.cur_player].budget = (long) value;
-                if(value== game.ListOfPlayer[ game.cur_player].city_crew.deposit) game.ListOfPlayer[ game.cur_player].city_crew.owner = null;
+            CurrentPlayer.budget--;
+            if(CurrentPlayer.city_crew.deposit >= value ){
+                CurrentPlayer.city_crew.deposit -= value;
+                CurrentPlayer.budget +=  value;
+                if(CurrentPlayer.city_crew.deposit == 0) CurrentPlayer.city_crew.owner = null;
             }
         }
         return false;
@@ -198,58 +209,43 @@ public class Command implements AllCommand {
 
     @Override
     public boolean shoot(Direction dir,long value) {
-        int Crewcol = (int) game.ListOfPlayer[ game.cur_player].city_crew.col();
-        int Crewrow = (int) game.ListOfPlayer[ game.cur_player].city_crew.row();
-        int newCol = Crewcol;
-        int newRow = Crewrow;
-        if(game.ListOfPlayer[ game.cur_player].budget-value>=1){
-            if(dir.equals(Direction.up))newRow--;
-            else if(dir.equals(Direction.down))newRow++;
-            else if(Crewcol%2==1){
-                if(dir.equals(Direction.upright)){
-                    newCol++;
-                }else if(dir.equals(Direction.downright)){
-                    newRow++;
-                    newCol++;
-                }else if(dir.equals(Direction.downleft)){
-                    newRow++;
-                    newCol--;
-                }else if(dir.equals(Direction.upleft)){
-                    newCol--;
+        Player CurrentPlayer = game.ListOfPlayer[game.cur_player];
+        if(CurrentPlayer.budget < 1) return done();
+        else{
+            CurrentPlayer.budget--;
+            if(CurrentPlayer.budget >=value){
+                int SetDirection=0;
+                switch (dir) {
+                    case up -> {}
+                    case upright -> SetDirection = 1;
+                    case downright -> SetDirection = 2;
+                    case down -> SetDirection = 3;
+                    case downleft -> SetDirection = 4;
+                    case upleft -> SetDirection = 5;
                 }
-            }else{
-                if(dir.equals(Direction.upright)){
-                    newRow--;
-                    newCol++;
-                }else if(dir.equals(Direction.downright)){
-                    newCol++;
-                }else if(dir.equals(Direction.downleft)){
-                    newCol--;
-                }else if(dir.equals(Direction.upleft)){
-                    newRow--;
-                    newCol--;
+                CurrentPlayer.budget -= value;
+                Region CityCrewDirectionPartner = game.ListOfPlayer[game.cur_player].city_crew.PartnerRegion[SetDirection];
+                if(CityCrewDirectionPartner.hasOwner()){
+                    CityCrewDirectionPartner.deposit = Math.max(0, CityCrewDirectionPartner.deposit- value) ;
+                    if(CityCrewDirectionPartner.deposit <1) {
+                        if(CityCrewDirectionPartner.owner.city_center.equals(CityCrewDirectionPartner) ) {
+                            CityCrewDirectionPartner.owner.lose = true;
+                            CheckWining();
+                        }
+                        CityCrewDirectionPartner.owner =null;
+                    }
                 }
-            }
-            game.ListOfPlayer[ game.cur_player].budget -= value;
-            Region opp = game.field[newRow][newCol];
-            if(opp.deposit-value>=1){
-                opp.deposit -= value;
-            }else {
-                for (int i = 0; i< game.ListOfPlayer.length; i++){
-                    if(game.ListOfPlayer[i].city_center.row()==newRow&& game.ListOfPlayer[i].city_center.col()==newCol)
-                        game.ListOfPlayer[i].lose=true;
-                }
-                opp.deposit = 0;
-                opp.owner = null;
 
             }
-        }else return done();
+        }
         return false;
     }
-
-    private int indexAdjust(long x,long max){
-        if(x<0)return 0;
-        else if(x<max)return (int) x;
-        else return (int) max-1;
+    private void CheckWining(){
+        long player = 0;
+        for(Player CheckWining: game.ListOfPlayer){
+            if(!CheckWining.lose)player++ ;
+            if(player >=2) break;
+        }
+        if(player == 1) game.winner = game.ListOfPlayer[game.cur_player];
     }
 }

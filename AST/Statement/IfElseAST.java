@@ -1,6 +1,11 @@
-package AST;
+package AST.Statement;
 
-public class IfElseAST implements Statement{
+import AST.EvalError;
+import AST.Expr.Expr;
+import AST.Statement.Statement;
+import AST.Variable_Storage;
+
+public class IfElseAST implements Statement {
     private final Expr condition;
     private final Statement ifStatement;
     private final Statement elseStatement;

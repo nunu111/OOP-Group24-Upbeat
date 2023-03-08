@@ -14,7 +14,8 @@ public class Region {
         PartnerRegion = new Region[]{null,null,null,null,null,null};
     }
     public boolean hasOwner(){
-        return owner != null;
+        if(owner == null) return false;
+        else return !owner.lose;
     }
     public long row(){
         return row;

@@ -1,9 +1,10 @@
-package AST;
+package AST.Statement;
 
+import AST.EvalError;
 import GameProgress.AllCommand;
 import GameProgress.Command;
 
-public class moveAST implements Statement{
+public class moveAST implements Statement {
     AllCommand.Direction dir ;
     public moveAST(AllCommand.Direction _dir){
         this.dir = _dir;

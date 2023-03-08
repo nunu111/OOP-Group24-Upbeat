@@ -1,11 +1,13 @@
-package AST;
+package AST.Expr;
 
+import AST.EvalError;
+import AST.Expr.Expr;
 import GameProgress.AllCommand;
 import GameProgress.Command;
 
 import java.util.Map;
 
-public class nearbyAST implements Expr{
+public class nearbyAST implements Expr {
     AllCommand.Direction dir;
     public nearbyAST(AllCommand.Direction _dir){
         this.dir = _dir;

@@ -1,6 +1,11 @@
-package AST;
+package AST.Statement;
 
-public class WhileAST implements Statement{
+import AST.EvalError;
+import AST.Expr.Expr;
+import AST.Statement.Statement;
+import AST.Variable_Storage;
+
+public class WhileAST implements Statement {
     private final Expr condition;
     private final Statement statement;
     public WhileAST(Expr _condition,Statement _statement){
@@ -11,7 +16,7 @@ public class WhileAST implements Statement{
     public boolean eval(boolean IsDone) throws EvalError {
         if(statement == null) throw new EvalError("While statement has empty body");
         if (IsDone) return true;
-        for(int counter=0;counter<10000 && condition.eval(Variable_Storage.instance().GetVariableMap())>0;counter++){
+        for(int counter = 0; counter<10000 && condition.eval(Variable_Storage.instance().GetVariableMap())>0; counter++){
             if(IsDone) return true;
             IsDone = this.statement.eval(IsDone);
         }

@@ -3,13 +3,14 @@ package GameProgress;
 import java.util.Objects;
 
 public class Player {
-    protected String name;
-    protected long budget;
+    public String name;
+    public double budget;
     protected Region city_center;
     public Region city_crew;
-    protected boolean lose;
+    public boolean lose;
 
     public Player(String name, long budget, Region city_center, Region city_crew){
+        System.out.println(budget);
         this.name = name;
         this.budget = budget;
         this.city_center = city_center;

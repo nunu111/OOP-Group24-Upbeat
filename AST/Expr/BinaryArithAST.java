@@ -1,8 +1,10 @@
-package AST;
+package AST.Expr;
+
+import AST.EvalError;
 
 import java.util.Map;
 
-public class BinaryArithAST implements Expr{
+public class BinaryArithAST implements Expr {
     private final Expr left,right;
     private final String op;
     public BinaryArithAST(Expr _left,String _op,Expr _right){

@@ -1,8 +1,10 @@
-package AST;
+package AST.Expr;
+
+import AST.Expr.Expr;
 
 import java.util.Map;
 
-public class LongAST implements Expr{
+public class LongAST implements Expr {
     private final long val;
     public LongAST(long _val){
         this.val = _val;

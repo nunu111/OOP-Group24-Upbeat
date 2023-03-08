@@ -17,10 +17,11 @@ public class Game {
     public long plan_rev_sec;
     public long rev_cost;
     public long max_dep;
-    public double interest_pct;
+    public long interest_pct;
+    public Player winner;
+    protected long Turn;
 
-
-    public Game(long col, long row,long init_budget, long rev_cost, double interest_pct,
+    public Game(long col, long row,long init_budget, long rev_cost, long interest_pct,
                 long max_dep, long init_plan_min, long init_plan_sec, long init_center_dep, long plan_rev_min, long plan_rev_sec){
         this.col = col;
         this.row = row;
@@ -41,6 +42,7 @@ public class Game {
         this.init_plan_sec = init_plan_sec;
         this.plan_rev_min = plan_rev_min;
         this.plan_rev_sec = plan_rev_sec;
+        this.Turn = 1;
     }
     private Region[] RandomMap(long row, long col,long PlayerNum,long init_deposit){
         Random rand = new Random();
@@ -64,14 +66,40 @@ public class Game {
         for (int i = 0 ; i < Num_p ; i++){
             this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
         }
+        InterestUpdate();
     }
-    public Player GetCurrentPlayer(){
-        return ListOfPlayer[cur_player];
+    private void InterestUpdate(){
+        for(Region[] i: field){
+            for(Region current :i){
+                if(current.hasOwner()){
+                    double d=  current.deposit;
+                    double b = (double) interest_pct;
+                    double t =Turn;
+                    double r =b*Math.log10(d) *(Math.log(t));
+                    current.deposit += d*r/100;
+                }
+            }
+        }
     }
-    void newTurn(){
-        if(cur_player < ListOfPlayer.length-1) cur_player++;
-        else cur_player=0;
+    public void newTurn(){
+        if(winner == null){
+            Player nextTurn = ListOfPlayer[cur_player];
+            do{
+                if(cur_player < ListOfPlayer.length-1) {
+                    cur_player++;
+                }
+                else {
+                    Turn++;
+                    InterestUpdate();
+                    cur_player=0;
+                }
+                if (ListOfPlayer[cur_player] == nextTurn) {
+                    winner = nextTurn;
+                    break;
+                }
+            }
+            while(ListOfPlayer[cur_player].lose);
+        }
     }
-
 
 }

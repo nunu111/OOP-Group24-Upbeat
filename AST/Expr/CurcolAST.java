@@ -1,18 +1,18 @@
-package AST;
+package AST.Expr;
+
+import AST.EvalError;
 import GameProgress.Command;
 
 import java.util.Map;
 
-public class opponentAST implements Expr{
-
+public class CurcolAST implements Expr {
     @Override
     public long eval(Map<String, Long> binding) throws EvalError {
-        return Command.instance().opponent();
+        return Command.instance().GetCurcol();
     }
 
     @Override
     public void prettyPrint(StringBuilder sb) {
-        sb.append("opponent");
-        sb.append("\n");
+        sb.append("curcol");
     }
 }

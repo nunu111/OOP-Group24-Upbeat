@@ -1,8 +1,12 @@
-package AST;
+package AST.Statement;
 
+import AST.EvalError;
+import AST.Expr.Expr;
+import AST.Statement.Statement;
+import AST.Variable_Storage;
 import GameProgress.Command;
 
-public class investAST implements Statement{
+public class investAST implements Statement {
     private final Expr InvestValue;
     public investAST(Expr _InvestValue){
         this.InvestValue = _InvestValue;
@@ -10,8 +14,7 @@ public class investAST implements Statement{
     @Override
     public boolean eval(boolean IsDone) throws EvalError {
         if(IsDone) return true;
-        Command.instance().invest(InvestValue.eval(Variable_Storage.instance().GetVariableMap()));
-        return false;
+        return Command.instance().invest(InvestValue.eval(Variable_Storage.instance().GetVariableMap()));
     }
 
     @Override

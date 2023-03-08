@@ -1,8 +1,12 @@
-package AST;
+package AST.Statement;
 
+import AST.EvalError;
+import AST.Expr.Expr;
+import AST.Statement.Statement;
+import AST.Variable_Storage;
 import GameProgress.Command;
 
-public class collectAST implements Statement{
+public class collectAST implements Statement {
     private final Expr CollectValue;
     public collectAST(Expr _CollectValue){
         this.CollectValue = _CollectValue;

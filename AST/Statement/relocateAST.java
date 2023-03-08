@@ -1,8 +1,10 @@
-package AST;
+package AST.Statement;
 
+import AST.EvalError;
+import AST.Statement.Statement;
 import GameProgress.Command;
 
-public class relocateAST implements Statement{
+public class relocateAST implements Statement {
     @Override
     public boolean eval(boolean IsDone) throws EvalError {
         if(IsDone) return true;

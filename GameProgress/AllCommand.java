@@ -23,7 +23,7 @@ public interface AllCommand {
     boolean done();
     boolean relocate();
     boolean move(Direction dir);
-    void invest(long value);
+    boolean invest(long value);
     boolean collect(long value);
     boolean shoot(Direction dir,long value);
 }

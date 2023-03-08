@@ -1,5 +1,5 @@
 package GameProgress;
-import AST.PlanAST;
+import AST.Statement.PlanAST;
 
 import java.io.File;
 import java.io.FileNotFoundException;

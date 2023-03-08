@@ -1,5 +1,6 @@
 package AST;
 
+import AST.Expr.Expr;
 import GameProgress.Command;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class Variable_Storage {
         return instance;
     }
 
-    public void AssignVariable(String _VarName,Expr _VarValue) throws EvalError {
+    public void AssignVariable(String _VarName, Expr _VarValue) throws EvalError {
         int curr_player = findPlayer.game.cur_player;
         PlayerVariable[curr_player].put(_VarName,_VarValue.eval(PlayerVariable[curr_player]));
     }

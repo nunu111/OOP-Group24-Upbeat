@@ -1,4 +1,8 @@
-package AST;
+package AST.Expr;
+
+import AST.EvalError;
+import AST.Expr.Expr;
+import AST.Variable_Storage;
 
 import java.util.Map;
 

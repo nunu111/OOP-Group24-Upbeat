@@ -1,10 +1,12 @@
-package AST;
+package AST.Statement;
 
+import AST.EvalError;
+import AST.Statement.Statement;
 import GameProgress.Command;
 
 import java.util.ArrayList;
 
-public class PlanAST implements Statement{
+public class PlanAST implements Statement {
     private final ArrayList<Statement> AllStatement;
     public PlanAST(ArrayList<Statement> _AllStatement ){
         AllStatement = new ArrayList<>();

@@ -1,6 +1,10 @@
 package GameProgress;
 
 import AST.*;
+import AST.Expr.Expr;
+import AST.Statement.PlanAST;
+import AST.Statement.Statement;
+import AST.Statement.moveAST;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,17 +13,14 @@ import java.util.NoSuchElementException;
 
 public class Parser{
     private final HashSet<String> ReservedWordSet;
-    private final HashSet<String> SpecialVariableSet;
     private final Nodefactory NodeCreate= Nodefactory.instance();
     private final Tokenizer tkz;
 
     public Parser(Tokenizer _tkz){
         this.tkz = _tkz;
         ReservedWordSet = new HashSet<>();
-        SpecialVariableSet = new HashSet<>();
         ReservedWordSet.addAll(Arrays.asList("collect", "done", "down", "downleft", "downright", "else", "if", "invest", "{", "}", "(", ")"
                                 , "move", "nearby", "opponent", "relocate", "shoot", "then", "up", "upleft", "upright", "while"));
-        SpecialVariableSet.addAll(Arrays.asList("rows", "cols", "currow", "curcol", "budget", "deposit", "int", "maxdeposit", "random"));
     }
 
     public PlanAST PlanParser() throws SyntaxError {
@@ -42,7 +43,7 @@ public class Parser{
     private Statement ParseStatement() throws SyntaxError {
         Statement statement=null;
         if(tkz.peek("done") || tkz.peek("relocate") || tkz.peek("move") ||tkz.peek("invest")|| tkz.peek("collect") || tkz.peek("shoot") ||
-                (IsNotReservedWord(tkz.peek()) && IsNotSpecialVariable(tkz.peek()))) statement =ParseCommand();
+                (IsNotReservedWord(tkz.peek()))) statement =ParseCommand();
         else if(tkz.peek("{")) statement = ParseBlockStatement();
         else if(tkz.peek("if")) statement =ParseIfStatement();
         else if(tkz.peek("while"))statement = ParseWhileStatement();
@@ -51,12 +52,12 @@ public class Parser{
 
     private Statement ParseCommand() throws SyntaxError {
         Statement statement =null;
-        if(IsNotReservedWord(tkz.peek()) && IsNotSpecialVariable(tkz.peek())) statement =ParseAssignmentStatement();
+        if(IsNotReservedWord(tkz.peek())) statement =ParseAssignmentStatement();
         else if(tkz.peek("done") || tkz.peek("relocate") || tkz.peek("move") ||tkz.peek("invest")|| tkz.peek("collect") || tkz.peek("shoot")) statement =ParseActionCommand();
         return statement;
     }
     private Statement ParseAssignmentStatement() throws SyntaxError {
-        if(IsNotReservedWord(tkz.peek()) && IsNotSpecialVariable(tkz.peek())){
+        if(IsNotReservedWord(tkz.peek())){
             String assign_var = tkz.consume();
             tkz.consume("=");
             return NodeCreate.AssignVariable(assign_var,ParseExpression());
@@ -209,31 +210,31 @@ public class Parser{
             return NodeCreate.Long(Long.parseLong(tkz.consume()));
         }else if (tkz.peek("rows")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetRows());
+            return NodeCreate.Rows();
         } else if(tkz.peek("cols")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetCols());
+            return NodeCreate.Cols();
         }else if(tkz.peek("currow")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetCurrow());
+            return NodeCreate.Currow();
         }else if(tkz.peek("curcol")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetCurcol());
+            return NodeCreate.Curcol();
         }else if(tkz.peek("budget")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetBudget());
+            return NodeCreate.Budget();
         }else if(tkz.peek("deposit")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetDeposit());
+            return NodeCreate.Deposit();
         }else if(tkz.peek("int")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetInterest());
+            return NodeCreate.Int();
         }else if(tkz.peek("maxdeposit")){
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetMaxDeposit());
+            return NodeCreate.Maxdeposit();
         }else if (tkz.peek("random")) {
             tkz.consume();
-            return NodeCreate.Long(Command.instance().GetRandom());
+            return NodeCreate.Random();
         }else if(IsNotReservedWord(tkz.peek())){
             return NodeCreate.Variable(tkz.consume());
         }else if(tkz.peek("(")){
@@ -257,9 +258,6 @@ public class Parser{
 
     private boolean IsNotReservedWord(String str) {
         return !ReservedWordSet.contains(str);
-    }
-    private boolean IsNotSpecialVariable(String str){
-        return !SpecialVariableSet.contains(str);
     }
     private boolean isNumber(String str){
         try{
