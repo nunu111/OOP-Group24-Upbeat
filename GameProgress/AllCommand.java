@@ -9,21 +9,21 @@ public interface AllCommand {
         downleft,
         downright
     }
-    public long GetRows();
-    public long GetCols();
-    public long GetCurrow();
-    public long GetCurcol();
-    public long GetBudget();
-    public long GetDeposit();
-    public long GetInterest();
-    public long GetMaxDeposit();
-    public int GetRandom();
-    public long opponent();
-    public long nearby(Direction dir);
-    public void done();
-    public void relocate();
-    public void move(Direction dir);
-    public void invest(double value);
-    public void collect(double value);
-    public void shoot(Direction dir,long value);
+    long GetRows();
+    long GetCols();
+    long GetCurrow();
+    long GetCurcol();
+    long GetBudget();
+    long GetDeposit();
+    long GetInterest();
+    long GetMaxDeposit();
+    int GetRandom();
+    long opponent();
+    long nearby(Direction dir);
+    void done();
+    void relocate();
+    void move(Direction dir);
+    void invest(long value);
+    void collect(long value);
+    void shoot(Direction dir,long value);
 }

@@ -10,8 +10,8 @@ public class VariableAST implements Expr {
     }
 
     @Override
-    public double eval(Map<String, Double> binding) throws EvalError {
-        if(!binding.containsKey(VarName)) Variable_Storage.instance().AssignVariable(VarName,0);
+    public long eval(Map<String, Long> binding) throws EvalError {
+        if(!binding.containsKey(VarName)) Variable_Storage.instance().AssignVariable(VarName,(long)0);
         return binding.get(VarName);
     }
 
