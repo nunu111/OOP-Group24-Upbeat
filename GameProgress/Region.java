@@ -1,8 +1,8 @@
 package GameProgress;
 
 public class Region {
-    protected long row;
-    protected long col;
+    private final long row;
+    private final long col;
     protected double deposit;
     protected Player owner;
     protected Region[] PartnerRegion;
@@ -16,6 +16,10 @@ public class Region {
     public boolean hasOwner(){
         return owner != null;
     }
+    public long row(){
+        return row;
+    }
+    public long col(){return col;}
     /**
      *
      * @param Partner Region that want to add

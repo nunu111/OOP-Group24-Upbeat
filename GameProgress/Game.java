@@ -49,8 +49,9 @@ public class Game {
             long x = rand.nextLong(col);
             long y = rand.nextLong(row);
             while(randMap.contains(field[(int) y][(int) x])){
-                y = rand.nextLong(row);
                 x = rand.nextLong(col);
+                y = rand.nextLong(row);
+
             }
             field[(int)y][(int)x].AddDepositToCenter(init_deposit);
             randMap.add(field[(int)y][(int)x]);
