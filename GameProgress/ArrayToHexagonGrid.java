@@ -35,7 +35,6 @@ public class ArrayToHexagonGrid {
                     else if(!IsColEvenNum)CurRegion.AddPartnerRegion(RegionArr[i][j-1],5);
                 }
             }
-
         }
     }
 }
