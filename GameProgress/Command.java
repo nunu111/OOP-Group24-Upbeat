@@ -72,7 +72,6 @@ public class Command implements AllCommand {
             if(CheckOpponent[1] != null){
                 if(CheckOpponent[1].hasOwner() && !CheckOpponent[1].owner.equals(CurrentPlayer) ) return returnValue;
                 else CheckOpponent[1] = CheckOpponent[1].PartnerRegion[1];
-
             }
             returnValue +=1;
             if(CheckOpponent[2] != null){
@@ -127,28 +126,28 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public void done() {
+    public boolean done() {
         game.newTurn();
+        return true;
     }
 
     @Override
-    public void relocate() {
+    public boolean relocate() {
         Player CurrentPlayer = game.ListOfPlayer[game.cur_player];
         Region CityCrew = CurrentPlayer.city_crew;
         Region CityCenter = CurrentPlayer.city_center;
         long distance = ShortestPathUnweighted.findShortest().shortestPath(CityCenter,CityCrew);
-        if(distance == -1) done();
-        else{
+        if(distance != -1) {
             long travelValue = 5*distance+10;
             if( CityCrew.owner.equals(CurrentPlayer) && CurrentPlayer.budget >= travelValue){
                 CurrentPlayer.budget -= travelValue;
             }
-            done();
         }
+        return done();
     }
 
     @Override
-    public void move(Direction dir) {
+    public boolean move(Direction dir) {
         int SetDirection=0;
         switch (dir) {
             case up -> {}
@@ -167,11 +166,12 @@ public class Command implements AllCommand {
                 CurrentPlayer.city_crew = CityCrewDirectionPartner;
                 CurrentPlayer.city_crew.owner = CurrentPlayer;
             }
-        }else done();
+        }else return done();
+        return false;
     }
 
     @Override
-    public void invest(double value) {
+    public void invest(long value) {
         game.ListOfPlayer[ game.cur_player].budget--;
         if(game.ListOfPlayer[ game.cur_player].budget>=value){
             game.ListOfPlayer[ game.cur_player].budget-=value;
@@ -183,8 +183,8 @@ public class Command implements AllCommand {
     }
 
     @Override
-    public void collect(double value) {
-        if(game.ListOfPlayer[ game.cur_player].budget<1) done();
+    public boolean collect(long value) {
+        if(game.ListOfPlayer[ game.cur_player].budget<1) return done();
         else {
             game.ListOfPlayer[ game.cur_player].budget--;
             if(value<= game.ListOfPlayer[ game.cur_player].city_crew.deposit){
@@ -193,10 +193,11 @@ public class Command implements AllCommand {
                 if(value== game.ListOfPlayer[ game.cur_player].city_crew.deposit) game.ListOfPlayer[ game.cur_player].city_crew.owner = null;
             }
         }
+        return false;
     }
 
     @Override
-    public void shoot(Direction dir,long value) {
+    public boolean shoot(Direction dir,long value) {
         int Crewcol = (int) game.ListOfPlayer[ game.cur_player].city_crew.col();
         int Crewrow = (int) game.ListOfPlayer[ game.cur_player].city_crew.row();
         int newCol = Crewcol;
@@ -242,7 +243,8 @@ public class Command implements AllCommand {
                 opp.owner = null;
 
             }
-        }else done();
+        }else return done();
+        return false;
     }
 
     private int indexAdjust(long x,long max){

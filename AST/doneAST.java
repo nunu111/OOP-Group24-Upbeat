@@ -5,9 +5,11 @@ import GameProgress.Command;
 public class doneAST implements Statement{
     public doneAST(){
     }
+
     @Override
-    public void eval() throws EvalError {
-        Command.instance().done();
+    public boolean eval(boolean IsDone) throws EvalError {
+        if (IsDone) return true;
+        return Command.instance().done();
     }
 
     @Override

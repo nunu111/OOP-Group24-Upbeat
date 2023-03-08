@@ -9,8 +9,9 @@ public class moveAST implements Statement{
         this.dir = _dir;
     }
     @Override
-    public void eval() throws EvalError {
-        Command.instance().move(dir);
+    public boolean eval(boolean IsDone) throws EvalError {
+        if(IsDone) return true;
+        return Command.instance().move(dir);
     }
 
     @Override

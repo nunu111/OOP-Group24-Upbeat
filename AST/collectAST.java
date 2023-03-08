@@ -8,8 +8,9 @@ public class collectAST implements Statement{
         this.CollectValue = _CollectValue;
     }
     @Override
-    public void eval() throws EvalError {
-        Command.instance().collect(CollectValue.eval(Variable_Storage.instance().GetVariableMap()));
+    public boolean eval(boolean IsDone) throws EvalError {
+        if (IsDone) return true;
+        return Command.instance().collect(CollectValue.eval(Variable_Storage.instance().GetVariableMap()));
     }
 
     @Override

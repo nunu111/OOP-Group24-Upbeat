@@ -8,8 +8,10 @@ public class investAST implements Statement{
         this.InvestValue = _InvestValue;
     }
     @Override
-    public void eval() throws EvalError {
+    public boolean eval(boolean IsDone) throws EvalError {
+        if(IsDone) return true;
         Command.instance().invest(InvestValue.eval(Variable_Storage.instance().GetVariableMap()));
+        return false;
     }
 
     @Override

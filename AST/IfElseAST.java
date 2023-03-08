@@ -12,13 +12,15 @@ public class IfElseAST implements Statement{
 
 
     @Override
-    public void eval() throws EvalError {
+    public boolean eval(boolean IsDone) throws EvalError {
+        if(IsDone) return true;
         if(condition.eval(Variable_Storage.instance().GetVariableMap()) >0 ) {
-            if(ifStatement != null)ifStatement.eval();
+            if(ifStatement != null) return ifStatement.eval(IsDone);
         }
         else {
-            if(elseStatement != null)elseStatement.eval();
+            if(elseStatement != null) return elseStatement.eval(IsDone);
         }
+        return false;
     }
 
     @Override

@@ -10,8 +10,10 @@ public class AssignVariableAST implements Statement{
         this.VarValue = _VarValue;
     }
 
-    public void eval() throws EvalError {
+    public boolean eval(boolean IsDone) throws EvalError {
+        if(IsDone) return true;
         assign.AssignVariable(VarName,VarValue);
+        return false;
     }
 
     @Override

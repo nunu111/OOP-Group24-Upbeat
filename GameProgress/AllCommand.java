@@ -20,10 +20,10 @@ public interface AllCommand {
     int GetRandom();
     long opponent();
     long nearby(Direction dir);
-    void done();
-    void relocate();
-    void move(Direction dir);
+    boolean done();
+    boolean relocate();
+    boolean move(Direction dir);
     void invest(long value);
-    void collect(long value);
-    void shoot(Direction dir,long value);
+    boolean collect(long value);
+    boolean shoot(Direction dir,long value);
 }

@@ -10,8 +10,12 @@ public class BlockStatementAST implements Statement{
         AllBodyStatement.addAll(_AllBodyStatement);
     }
     @Override
-    public void eval() throws EvalError {
-        for(Statement key : AllBodyStatement) key.eval();
+    public boolean eval(boolean IsDone) throws EvalError {
+        for(Statement key : AllBodyStatement) {
+            if (IsDone) return true;
+            IsDone =key.eval(IsDone);
+        }
+        return IsDone;
     }
 
     @Override

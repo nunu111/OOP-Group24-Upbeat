@@ -1,5 +1,7 @@
 package AST;
 
+import GameProgress.Command;
+
 import java.util.ArrayList;
 
 public class PlanAST implements Statement{
@@ -9,8 +11,13 @@ public class PlanAST implements Statement{
         AllStatement.addAll(_AllStatement);
     }
     @Override
-    public void eval() throws EvalError {
-        for(Statement key : AllStatement) key.eval();
+    public boolean eval(boolean IsDone) throws EvalError {
+        for(Statement key : AllStatement) {
+            IsDone = key.eval(IsDone);
+            if(IsDone) return true;
+        }
+        if(!IsDone) return Command.instance().done();
+        return IsDone;
     }
 
     @Override

@@ -1,5 +1,5 @@
 package AST;
 
 public interface Statement extends Node{
-    void eval() throws EvalError;
+    boolean eval(boolean IsDone) throws EvalError;
 }

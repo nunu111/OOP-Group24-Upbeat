@@ -13,7 +13,7 @@ public class nearbyAST implements Expr{
 
     @Override
     public long eval(Map<String, Long> binding) throws EvalError {
-        return Command.instance().opponent();
+        return Command.instance().nearby(dir);
     }
 
     @Override

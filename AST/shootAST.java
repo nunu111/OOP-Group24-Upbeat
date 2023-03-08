@@ -11,8 +11,9 @@ public class shootAST implements Statement{
         this.ATKValue = _ATKValue;
     }
     @Override
-    public void eval() throws EvalError {
-        Command.instance().shoot(dir, (long) ATKValue.eval(Variable_Storage.instance().GetVariableMap()));
+    public boolean eval(boolean IsDone) throws EvalError {
+        if(IsDone) return true;
+        return Command.instance().shoot(dir, ATKValue.eval(Variable_Storage.instance().GetVariableMap()));
     }
 
     @Override

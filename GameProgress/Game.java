@@ -69,7 +69,7 @@ public class Game {
         return ListOfPlayer[cur_player];
     }
     void newTurn(){
-        if(cur_player< ListOfPlayer.length) cur_player++;
+        if(cur_player < ListOfPlayer.length-1) cur_player++;
         else cur_player=0;
     }
 
