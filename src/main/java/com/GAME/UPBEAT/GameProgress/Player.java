@@ -23,5 +23,7 @@ public class Player {
         this.Turn =1;
         this.lose = false;
         this.OwnRegion = new HashSet<>();
+        OwnRegion.add(city_center);
+        OwnRegion.add(city_crew);
     }
 }
