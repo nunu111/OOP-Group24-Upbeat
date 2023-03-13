@@ -8,6 +8,7 @@ class UpbeatApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }

@@ -1,27 +1,49 @@
-//package Test;
+package com.GAME.UPBEAT.Test;
+
+import com.GAME.UPBEAT.GameProgress.FileReader;
+import com.GAME.UPBEAT.GameProgress.GameData;
+import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.Player;
+import com.GAME.UPBEAT.GameProgress.Region;
+import com.GAME.UPBEAT.GameProgress.ShortestPathUnweighted;
+import com.GAME.UPBEAT.GameProgress.AllCommand;
+import com.GAME.UPBEAT.GameProgress.ArrayToHexagonGrid;
+import com.GAME.UPBEAT.GameProgress.SyntaxError;
+
+
+import org.testng.annotations.Test;
+
+//import static org.junit.jupiter.api.Assertions.*;
+
+
+public class GameTest {
+    @Test
+    public void tester() {
+        String[] name = {"Nu","Fifa","Boegy"};
+        FileReader file= FileReader.Instance();
+        GameData game = new GameData(5,5,100,10,10,10000,5,0,100,5,0);
+        Command com = Command.instance();
+        game.AddPlayer(3,name);
+        com.gameData = game;
+        Player P1 = com.gameData.ListOfPlayer[0];
+        Player P2 = com.gameData.ListOfPlayer[1];
+        Player P3 = com.gameData.ListOfPlayer[3];
+
+//        assertEquals(5,com.GetCols());
+//        assertEquals(5,com.GetCols());
+//        assertEquals(P1.city_crew.col(),com.GetCurcol());
+//        assertEquals(P1.city_crew.row(),com.GetCurrow());
+//        assertEquals(P1.budget,com.GetBudget());
+//        assertEquals(100,com.GetDeposit());
+//        assertEquals(,);
+//        assertEquals(,);
 //
-//import AST.EvalError;
-//import AST.Statement.PlanAST;
-//import AST.Variable_Storage;
-//import GameProgress.Command;
-//import GameProgress.FileReader;
-//import GameProgress.Game;
-//import GameProgress.Player;
-//
-//
-//class GameTest {
-//    @Test
-//    public void tester() throws EvalError {
-//        String[] name = {"Nu","Fifa","Bogey"};
-//        FileReader file= FileReader.Instance();
-//        Game game1 = file.ParsingConfigFile("src/GameProgress/Configuration.txt");
-//        Command.instance().lgame =game1;
-//        Command.instance().lgame.AddPlayer(3,name);
-//        PlanAST plan = file.ParsingPlayerFile("src/Test/Test.txt");
-//        plan.eval();
-////        System.out.println(Command.instance().lgame.cur_player);
-////        System.out.println(Variable_Storage.instance().GetVariableMap());
-//
-//    }
-//
-//}
+//        System.out.println(com.GetCols());
+//        System.out.println(com.GetRows());
+//        System.out.println(P1.city_crew.col()+" /// "+com.GetCurcol());
+//        System.out.println(P1.city_crew.row()+" /// "+com.GetCurrow());
+
+
+    }
+
+}

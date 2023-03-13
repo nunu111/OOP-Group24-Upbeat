@@ -21,12 +21,12 @@ public class Command implements AllCommand {
 
     @Override
     public long GetRows() {
-        return gameData.row+1;
+        return gameData.row;
     }
 
     @Override
     public long GetCols() {
-        return gameData.col+1;
+        return gameData.col;
     }
 
     @Override
