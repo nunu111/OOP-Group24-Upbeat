@@ -1,4 +1,4 @@
-package com.GAME.UPBEAT.Test;
+package com.GAME.UPBEAT;
 
 import com.GAME.UPBEAT.GameProgress.FileReader;
 import com.GAME.UPBEAT.GameProgress.GameData;
@@ -13,7 +13,7 @@ import com.GAME.UPBEAT.GameProgress.SyntaxError;
 
 import org.testng.annotations.Test;
 
-//import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class GameTest {
@@ -29,12 +29,12 @@ public class GameTest {
         Player P2 = com.gameData.ListOfPlayer[1];
         Player P3 = com.gameData.ListOfPlayer[3];
 
-//        assertEquals(5,com.GetCols());
-//        assertEquals(5,com.GetCols());
-//        assertEquals(P1.city_crew.col(),com.GetCurcol());
-//        assertEquals(P1.city_crew.row(),com.GetCurrow());
-//        assertEquals(P1.budget,com.GetBudget());
-//        assertEquals(100,com.GetDeposit());
+        assertEquals(5,com.GetCols());
+        assertEquals(5,com.GetCols());
+        assertEquals(P1.city_crew.col(),com.GetCurcol());
+        assertEquals(P1.city_crew.row(),com.GetCurrow());
+        assertEquals(P1.budget,com.GetBudget());
+        assertEquals(100,com.GetDeposit());
 //        assertEquals(,);
 //        assertEquals(,);
 //
