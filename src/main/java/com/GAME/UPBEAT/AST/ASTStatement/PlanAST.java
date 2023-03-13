@@ -1,8 +1,7 @@
 package com.GAME.UPBEAT.AST.ASTStatement;
 
 import com.GAME.UPBEAT.AST.EvalError;
-import com.GAME.UPBEAT.AST.ASTStatement.Statement;
-import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.GameState;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class PlanAST implements Statement {
             IsDone = key.eval(IsDone);
             if(IsDone) return true;
         }
-        if(!IsDone) return Command.instance().done();
+        if(!IsDone) return GameState.instance().done();
         return IsDone;
     }
 

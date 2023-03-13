@@ -3,13 +3,13 @@ package com.GAME.UPBEAT.GameProgress;
 import com.GAME.UPBEAT.Server.ReceiveMessage.AddPlayer;
 
 import java.util.Random;
-public class Command implements AllCommand {
+public class GameState implements AllCommand {
     public GameData gameData;
     private final FileReader ConfigReader = FileReader.Instance();
-    private static Command instance;
-    private Command(){}
-    public static Command instance(){
-        if(instance == null) instance = new Command();
+    private static GameState instance;
+    private GameState(){}
+    public static GameState instance(){
+        if(instance == null) instance = new GameState();
         return instance;
     }
     public GameData GameInstaller(AddPlayer Players){ // parameter get player info from front-end(parameter connect with spring but does not create spring now)

@@ -6,7 +6,7 @@ package com.GAME.UPBEAT;//
 import com.GAME.UPBEAT.AST.EvalError;
 import com.GAME.UPBEAT.AST.Variable_Storage;
 import com.GAME.UPBEAT.AST.ASTStatement.PlanAST;
-import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.GameState;
 import com.GAME.UPBEAT.GameProgress.FileReader;
 import com.GAME.UPBEAT.GameProgress.GameData;
 import com.GAME.UPBEAT.GameProgress.Parser;
@@ -22,7 +22,7 @@ public class main {
     }
 
     public static void g() {
-        Command test = Command.instance();
+        GameState test = GameState.instance();
         test.gameData = new GameData(20L, 20L, 1000000L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L);
         test.gameData.AddPlayer(1L, new String[]{"nu"});
         Player CurrentPlayer = test.gameData.ListOfPlayer[test.gameData.cur_player];
@@ -46,15 +46,15 @@ public class main {
         String[] name = new String[]{"Nu"};
         FileReader file = FileReader.Instance();
         GameData game1 = file.ParsingConfigFile("src/GameProgress/Configuration.txt");
-        Command.instance().gameData = game1;
+        GameState.instance().gameData = game1;
         game1.AddPlayer(1L, name);
         PlanAST plan = file.ParsingPlayerFile("src/Test/SemiTest.txt");
         System.out.println();
         StringBuilder s = new StringBuilder();
         plan.prettyPrint(s);
         plan.eval(false);
-        System.out.println(Command.instance().gameData.ListOfPlayer[Command.instance().gameData.cur_player].name);
-        System.out.println(Command.instance().gameData.ListOfPlayer[Command.instance().gameData.cur_player].budget);
+        System.out.println(GameState.instance().gameData.ListOfPlayer[GameState.instance().gameData.cur_player].name);
+        System.out.println(GameState.instance().gameData.ListOfPlayer[GameState.instance().gameData.cur_player].budget);
         System.out.println(Variable_Storage.instance().GetVariableMap());
     }
 
