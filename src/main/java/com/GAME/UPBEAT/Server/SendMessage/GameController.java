@@ -1,4 +1,4 @@
-package com.GAME.UPBEAT.Server;
+package com.GAME.UPBEAT.Server.SendMessage;
 
 import com.GAME.UPBEAT.GameProgress.GameState;
 import com.GAME.UPBEAT.GameProgress.GameData;
