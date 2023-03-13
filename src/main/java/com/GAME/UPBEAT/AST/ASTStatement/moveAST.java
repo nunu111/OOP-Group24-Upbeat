@@ -2,7 +2,7 @@ package com.GAME.UPBEAT.AST.ASTStatement;
 
 import com.GAME.UPBEAT.AST.EvalError;
 import com.GAME.UPBEAT.GameProgress.AllCommand;
-import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.GameState;
 
 public class moveAST implements Statement {
     AllCommand.Direction dir ;
@@ -12,7 +12,7 @@ public class moveAST implements Statement {
     @Override
     public boolean eval(boolean IsDone) throws EvalError {
         if(IsDone) return true;
-        return Command.instance().move(dir);
+        return GameState.instance().move(dir);
     }
 
     @Override

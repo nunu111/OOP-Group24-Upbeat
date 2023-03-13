@@ -1,7 +1,7 @@
 package com.GAME.UPBEAT.AST;
 
 import com.GAME.UPBEAT.AST.ASTExpr.Expr;
-import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.GameState;
 
 import java.util.HashMap;
 
@@ -9,11 +9,11 @@ public class Variable_Storage {
 
     private static Variable_Storage instance;
     private final HashMap<String,Long>[] PlayerVariable ;
-    private Command findPlayer = Command.instance();
+    private GameState findPlayer = GameState.instance();
 
     private Variable_Storage(){
-        this.PlayerVariable = new HashMap[Command.instance().gameData.ListOfPlayer.length];
-        for(int i = 0; i < Command.instance().gameData.ListOfPlayer.length ; i++)
+        this.PlayerVariable = new HashMap[GameState.instance().gameData.ListOfPlayer.length];
+        for(int i = 0; i < GameState.instance().gameData.ListOfPlayer.length ; i++)
         this.PlayerVariable[i] = new HashMap<>();
     }
 

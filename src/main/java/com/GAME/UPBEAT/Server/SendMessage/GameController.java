@@ -1,6 +1,6 @@
-package com.GAME.UPBEAT.Server;
+package com.GAME.UPBEAT.Server.SendMessage;
 
-import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.GameState;
 import com.GAME.UPBEAT.GameProgress.GameData;
 import com.GAME.UPBEAT.Server.ReceiveMessage.AddPlayer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class GameController {
     @MessageMapping("/AddPlayer")
     @SendTo("/topic/filed")
     public GameData getGameData(AddPlayer addPlayer) {
-        return Command.instance().GameInstaller(addPlayer);
+        return GameState.instance().GameInstaller(addPlayer);
     }
 
 }

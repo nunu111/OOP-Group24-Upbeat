@@ -2,13 +2,8 @@ package com.GAME.UPBEAT;
 
 import com.GAME.UPBEAT.GameProgress.FileReader;
 import com.GAME.UPBEAT.GameProgress.GameData;
-import com.GAME.UPBEAT.GameProgress.Command;
+import com.GAME.UPBEAT.GameProgress.GameState;
 import com.GAME.UPBEAT.GameProgress.Player;
-import com.GAME.UPBEAT.GameProgress.Region;
-import com.GAME.UPBEAT.GameProgress.ShortestPathUnweighted;
-import com.GAME.UPBEAT.GameProgress.AllCommand;
-import com.GAME.UPBEAT.GameProgress.ArrayToHexagonGrid;
-import com.GAME.UPBEAT.GameProgress.SyntaxError;
 
 
 import org.testng.annotations.Test;
@@ -22,7 +17,7 @@ public class GameTest {
         String[] name = {"Nu","Fifa","Boegy"};
         FileReader file= FileReader.Instance();
         GameData game = new GameData(5,5,100,10,10,10000,5,0,100,5,0);
-        Command com = Command.instance();
+        GameState com = GameState.instance();
         game.AddPlayer(3,name);
         com.gameData = game;
         Player P1 = com.gameData.ListOfPlayer[0];
