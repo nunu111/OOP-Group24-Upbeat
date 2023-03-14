@@ -26,7 +26,7 @@ public class GameTest {
         long init_center_dep=100;
         long plan_rev_min=5;
         long plan_rev_sec=0;
-
+        file.ParsingConfigFile("src/main/java/com/GAME/UPBEAT/GameProgress/Configuration.txt");
         GameData game = new GameData(col,row,init_budget,rev_cost,interest,max_dep,init_plan_min,init_plan_sec,init_center_dep,plan_rev_min,plan_rev_sec);
         GameState com = GameState.instance();
         game.AddPlayer(3,name);

@@ -32,8 +32,8 @@ public class Variable_Storage {
         int curr_player = findPlayer.gameData.cur_player;
         PlayerVariable[curr_player].put(_VarName,_VarValue);
     }
-    public double GetVariableValue(String key){
-        return PlayerVariable[findPlayer.gameData.cur_player].get(key);
+    public double GetVariableValue(int PlayerIndex,String key){
+        return PlayerVariable[PlayerIndex].get(key);
     }
     public HashMap<String,Long> GetVariableMap(){
         return PlayerVariable[findPlayer.gameData.cur_player];
