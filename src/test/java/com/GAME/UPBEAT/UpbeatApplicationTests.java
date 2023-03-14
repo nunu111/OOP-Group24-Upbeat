@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UpbeatApplicationTests {
 	@Test
 	void contextLoads() {
-		assertEquals(1,1);
+//		assertEquals(1,1);
 //		String[] name = {"Nu","Fifa","Boegy"};
 //		FileReader file= FileReader.Instance();
 //		long col=5;

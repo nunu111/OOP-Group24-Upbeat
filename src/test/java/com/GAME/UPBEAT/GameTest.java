@@ -5,8 +5,7 @@ import com.GAME.UPBEAT.GameProgress.GameData;
 import com.GAME.UPBEAT.GameProgress.GameState;
 import com.GAME.UPBEAT.GameProgress.Player;
 
-
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
