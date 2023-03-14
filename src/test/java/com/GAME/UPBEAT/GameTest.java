@@ -33,12 +33,12 @@ public class GameTest {
         com.gameData = game;
         Player P1 = com.gameData.ListOfPlayer[0];
         Player P2 = com.gameData.ListOfPlayer[1];
-        Player P3 = com.gameData.ListOfPlayer[3];
+        Player P3 = com.gameData.ListOfPlayer[2];
 
         assertEquals(col,com.GetCols());
         assertEquals(row,com.GetRows());
-        assertEquals(P1.city_crew.col(),com.GetCurcol());
-        assertEquals(P1.city_crew.row(),com.GetCurrow());
+        assertEquals(P1.city_crew.col()+1,com.GetCurcol());
+        assertEquals(P1.city_crew.row()+1,com.GetCurrow());
         assertEquals(P1.budget,com.GetBudget());
         assertEquals(100,com.GetDeposit());
 //        assertEquals(,);
