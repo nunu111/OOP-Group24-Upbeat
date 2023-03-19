@@ -158,6 +158,7 @@ public class GameState implements AllCommand {
             long travelValue = 5*distance+10;
             if( CityCrew.hasOwner() && CityCrew.owner.equals(CurrentPlayer) && CurrentPlayer.budget >= travelValue){
                 CurrentPlayer.budget -= travelValue;
+                CurrentPlayer.city_center = CityCrew;
             }
         }
         return done();
@@ -211,6 +212,7 @@ public class GameState implements AllCommand {
                 CurrentPlayer.city_crew.deposit -= value;
                 CurrentPlayer.budget +=  value;
                 if(CurrentPlayer.city_crew.deposit < 1) {
+                    if(CurrentPlayer.city_center.equals(CurrentPlayer.city_crew)) CurrentPlayer.lose = true;
                     CurrentPlayer.OwnRegion.remove(CurrentPlayer.city_crew);
                     CurrentPlayer.city_crew.owner = null;
                 }

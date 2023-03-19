@@ -68,11 +68,13 @@ public class GameData {
     }
 
     public void newTurn(){
-        if(cur_player < ListOfPlayer.length-1) cur_player++;
-        else{
-            cur_player=0;
-            if(ListOfPlayer[cur_player].lose)cur_player++;
-        }
+        ListOfPlayer[cur_player].Turn++;
+        do{
+            if(cur_player < ListOfPlayer.length-1) cur_player++;
+            else{
+                cur_player=0;
+            }
+        }while(ListOfPlayer[cur_player].lose);
         InterestUpdateInterest();
     }
 
