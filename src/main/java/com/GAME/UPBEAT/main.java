@@ -17,8 +17,11 @@ import com.GAME.UPBEAT.GameProgress.Tokenizer;
 public class main {
 
     public static void main(String[] args) throws SyntaxError, EvalError {
-//        e();
-        g();
+        System.out.println("lol");
+        e();
+//        g();
+//        c();
+//        a();
     }
 
     public static void g() {

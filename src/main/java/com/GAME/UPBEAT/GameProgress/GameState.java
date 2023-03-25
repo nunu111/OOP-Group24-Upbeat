@@ -154,10 +154,12 @@ public class GameState implements AllCommand {
         Region CityCrew = CurrentPlayer.city_crew;
         Region CityCenter = CurrentPlayer.city_center;
         long distance = ShortestPathUnweighted.findShortest().shortestPath(CityCenter,CityCrew);
+        System.out.println(distance);
         if(distance != -1) {
             long travelValue = 5*distance+10;
             if( CityCrew.hasOwner() && CityCrew.owner.equals(CurrentPlayer) && CurrentPlayer.budget >= travelValue){
                 CurrentPlayer.budget -= travelValue;
+                CurrentPlayer.city_center = CityCrew;
             }
         }
         return done();
@@ -212,6 +214,7 @@ public class GameState implements AllCommand {
                 CurrentPlayer.budget +=  value;
                 if(CurrentPlayer.city_crew.deposit < 1) {
                     CurrentPlayer.OwnRegion.remove(CurrentPlayer.city_crew);
+                    if(CurrentPlayer.city_center.equals(CurrentPlayer.city_crew)) CurrentPlayer.lose = true;
                     CurrentPlayer.city_crew.owner = null;
                 }
             }

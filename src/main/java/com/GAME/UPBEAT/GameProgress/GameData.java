@@ -1,5 +1,6 @@
 package com.GAME.UPBEAT.GameProgress;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -67,15 +68,27 @@ public class GameData {
         }
     }
 
-    public void newTurn(){
-        if(cur_player < ListOfPlayer.length-1) cur_player++;
-        else{
-            cur_player=0;
-            if(ListOfPlayer[cur_player].lose)cur_player++;
+    public void AddPlayerForTest( long Num_p, String[] name){
+        this.ListOfPlayer = new Player[(int) Num_p];
+        Region[] city_center = {field[3][4],field[2][4],field[3][5],field[5][5],field[0][4]};
+        for (int i = 0 ; i < Num_p ; i++){
+            this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
+            city_center[i].AddDepositToCenter(this.init_center_dep);
+
         }
-        InterestUpdateInterest();
     }
 
+    public void newTurn(){
+        ListOfPlayer[cur_player].Turn++;
+        ListOfPlayer[cur_player].city_crew = ListOfPlayer[cur_player].city_center;
+        do{
+            if(cur_player < ListOfPlayer.length-1) cur_player++;
+            else{
+                cur_player=0;
+            }
+        }while(ListOfPlayer[cur_player].lose);
+        InterestUpdateInterest();
+    }
     public void InterestUpdateInterest(){
         Player CurrentPlayer = ListOfPlayer[cur_player];
         for(Region owned: CurrentPlayer.OwnRegion){
