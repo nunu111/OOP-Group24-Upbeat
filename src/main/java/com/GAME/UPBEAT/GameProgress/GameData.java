@@ -89,6 +89,7 @@ public class GameData {
         }while(ListOfPlayer[cur_player].lose);
         InterestUpdateInterest();
     }
+
     public void InterestUpdateInterest(){
         Player CurrentPlayer = ListOfPlayer[cur_player];
         for(Region owned: CurrentPlayer.OwnRegion){
