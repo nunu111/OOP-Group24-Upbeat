@@ -1,6 +1,6 @@
 package com.GAME.UPBEAT.GameProgress;
 
-import com.GAME.UPBEAT.Server.ReceiveMessage.AddPlayer;
+//import com.GAME.UPBEAT.Server.ReceiveMessage.AddPlayer;
 
 import java.util.Random;
 public class GameState implements AllCommand {
@@ -12,12 +12,15 @@ public class GameState implements AllCommand {
         if(instance == null) instance = new GameState();
         return instance;
     }
-    public GameData GameInstaller(AddPlayer Players){ // parameter get player info from front-end(parameter connect with spring but does not create spring now)
-        gameData = ConfigReader.ParsingConfigFile("/src/Configuration.txt");
-        gameData.AddPlayer(Players.getNumOfPlayers(),Players.getNameOfPlayers());
-        gameData.InterestUpdateInterest();
-        return gameData;
+    public void GameStaring(){
+        gameData=ConfigReader.ParsingConfigFile("src/main/java/com/GAME/UPBEAT/GameProgress/Configuration.txt");
     }
+//    public GameData GameInstaller(AddPlayer Players){ // parameter get player info from front-end(parameter connect with spring but does not create spring now)
+//        gameData = ConfigReader.ParsingConfigFile("/src/Configuration.txt");
+//        gameData.AddPlayer(Players.getNumOfPlayers(),Players.getNameOfPlayers());
+//        gameData.InterestUpdateInterest();
+//        return gameData;
+//    }
 
     @Override
     public long GetRows() {
@@ -215,7 +218,6 @@ public class GameState implements AllCommand {
                 if(CurrentPlayer.city_crew.deposit < 1) {
                     if(CurrentPlayer.city_center.equals(CurrentPlayer.city_crew)) CurrentPlayer.lose = true;
                     CurrentPlayer.OwnRegion.remove(CurrentPlayer.city_crew);
-                    if(CurrentPlayer.city_center.equals(CurrentPlayer.city_crew)) CurrentPlayer.lose = true;
                     CurrentPlayer.city_crew.owner = null;
                 }
             }
