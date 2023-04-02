@@ -49,14 +49,14 @@ public class GameTest {
         //GetDeposit
         assertEquals(100, com.GetDeposit());
         //GetInterest
-        assertEquals(0, com.GetInterest());//งง
+        assertEquals(0, com.GetInterest());
         //GetMaxDeposit
         assertEquals(10000, com.GetMaxDeposit());
         //GetRandom
         assertEquals(10000, com.GetMaxDeposit());
         //GetRandom
         int rand = com.GetRandom();
-        assert (rand >= 0 && rand < 1000);//อาจจะมาแก้
+        assert (rand >= 0 && rand < 1000);
 
         //hasOwner
         assertEquals(true,P1.city_crew.hasOwner());
