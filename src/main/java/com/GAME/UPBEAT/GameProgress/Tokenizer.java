@@ -39,7 +39,7 @@ public class Tokenizer {
 
     private void computeNext() throws SyntaxError {
         StringBuilder s = new StringBuilder();
-        while (pos < src.length() && (Character.isSpaceChar(src.charAt(pos)) || src.charAt(pos)=='\n')) {
+        while (pos < src.length() && (Character.isSpaceChar(src.charAt(pos)) || src.charAt(pos)=='\n'|| src.charAt(pos)=='\r')) {
             pos++;
         }
         if(pos == src.length()){
@@ -68,7 +68,7 @@ public class Tokenizer {
             s.append(c);
             pos++;
         }
-        else if (c == '\n'){
+        else if (c == '\n' || c=='\r'){
             pos++;
         }
         else throw new SyntaxError("unknown character: " + c);
