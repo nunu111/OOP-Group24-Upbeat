@@ -13,8 +13,8 @@ public class ParserandASTTest {
     @Test
     public void parsing() throws SyntaxError, EvalError {
         GameData TestGame=FileReader.Instance().ParsingConfigFile("src/main/java/com/GAME/UPBEAT/GameProgress/Configuration.txt");
-        String[] name = {"Nu","Fifa","Boegy"};
-        TestGame.AddPlayer(3,name);
+        String[] name = {"Nu","Fifa","Boegy","Gun","Fong"};
+        TestGame.AddPlayerForTest(5,name);
         GameState.instance().gameData = TestGame;
         String ParsMsg;
 
@@ -31,6 +31,7 @@ public class ParserandASTTest {
         PlanAST EvalTest= TestParsing.PlanParser();
         EvalTest.eval(false);
         assertEquals((long)(50), Variable_Storage.instance().GetVariableValue(0,"t"));
-//        assertEquals();
+
+
     }
 }
