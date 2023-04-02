@@ -60,19 +60,23 @@ public class GameData {
         return randMap.toArray(new Region[0]);
     }
 
-    public void AddPlayer( long Num_p, String[] name){
+    public void AddPlayer( long Num_p, String[] name) {
         this.ListOfPlayer = new Player[(int) Num_p];
         Region[] city_center = RandomMap(this.row,this.col,Num_p,init_center_dep);
         for (int i = 0 ; i < Num_p ; i++){
-            this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
+            this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i],init_plan_min,init_plan_sec,plan_rev_min,plan_rev_sec);
         }
     }
-
+    public void ClearData(){
+        this.ListOfPlayer = new Player[0];
+        this.cur_player=0;
+        this.winner = null;
+    }
     public void AddPlayerForTest( long Num_p, String[] name){
         this.ListOfPlayer = new Player[(int) Num_p];
         Region[] city_center = {field[3][4],field[2][4],field[3][5],field[5][5],field[0][4]};
         for (int i = 0 ; i < Num_p ; i++){
-            this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i]);
+            this.ListOfPlayer[i]= new Player(name[i],init_budget,city_center[i],city_center[i],init_plan_min,init_plan_sec,plan_rev_min,plan_rev_sec);
             city_center[i].AddDepositToCenter(this.init_center_dep);
 
         }

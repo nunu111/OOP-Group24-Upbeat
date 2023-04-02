@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class InitializeGame {
+public class InitializeGameMessage {
     private final GameState Game = GameState.instance();
     private final long col;
     private final long row;
@@ -21,7 +21,7 @@ public class InitializeGame {
     private final long max_dep;
     private final long interest_pct;
     private boolean GameReady = false;
-    public InitializeGame(){
+    public InitializeGameMessage(){
         Game.GameStaring();
         this.col = Game.gameData.col;
         this.row = Game.gameData.row;
