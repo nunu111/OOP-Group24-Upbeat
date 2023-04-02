@@ -327,7 +327,7 @@ public class GameTest {
         assertEquals(com.gameData.field[0][3],com.gameData.ListOfPlayer[com.gameData.cur_player].city_crew);
         assertEquals(985,com.GetBudget());
 
-        //have not money enough
+        //have no money enough
 
         com.invest(984);
         com.move(AllCommand.Direction.down);
@@ -577,5 +577,71 @@ public class GameTest {
         Player P3 = com.gameData.ListOfPlayer[2];
         Player P4 = com.gameData.ListOfPlayer[3];
         Player P5 = com.gameData.ListOfPlayer[4];
+
+
+        //เงินหมด
+        P1.city_crew = com.gameData.field[3][3];
+        com.invest(999);
+        com.shoot(AllCommand.Direction.upright,100);
+        assertEquals(1000,com.GetDeposit());
+        assertEquals(1,com.gameData.cur_player);
+
+        //มีเงินไม่พอ
+        com.shoot(AllCommand.Direction.downleft,1000);
+        assertEquals(999,com.GetBudget());
+        com.gameData.cur_player=0;
+        P1.city_crew = com.gameData.field[3][3];
+        assertEquals(999,com.GetDeposit());
+        com.gameData.cur_player=1;
+
+        //โจมตีใส่Region
+        com.shoot(AllCommand.Direction.downleft,599);
+        assertEquals(399,com.GetBudget());
+        com.gameData.cur_player=0;
+        P1.city_crew = com.gameData.field[3][3];
+        assertEquals(400,com.GetDeposit());
+        com.gameData.cur_player=1;
+        com.done();
+
+        //โจมตีใส่จน เงินฝากRegion หมด
+        P3.city_crew = com.gameData.field[2][3];
+        com.shoot(AllCommand.Direction.down,499);
+        assertEquals(500,com.GetBudget());
+        com.gameData.cur_player=0;
+        P1.city_crew = com.gameData.field[3][3];
+        assertEquals(false,com.gameData.field[3][3].hasOwner());
+        assertEquals(0,com.GetDeposit());
+        com.gameData.cur_player=2;
+
+        //โจมตี Region เปล่า
+        com.shoot(AllCommand.Direction.up,99);
+        assertEquals(400,com.GetBudget());
+        P3.city_crew = com.gameData.field[1][3];
+        assertEquals(false,com.gameData.field[1][3].hasOwner());
+        assertEquals(0,com.GetDeposit());
+
+        //โจมตี Region ของตนเอง
+        com.invest(99);
+        P3.city_crew = com.gameData.field[1][4];
+        com.shoot(AllCommand.Direction.upleft,19);
+        assertEquals(280,com.GetBudget());
+        P3.city_crew = com.gameData.field[1][3];
+        assertEquals(true,com.gameData.field[1][3].hasOwner());
+        assertEquals(80,com.GetDeposit());
+
+        //โจมตีใส่ City center ตาย
+        P3.city_crew = com.gameData.field[3][5];
+        com.collect(501);
+        com.done();
+        P4.city_crew = com.gameData.field[4][5];
+        com.shoot(AllCommand.Direction.up,600);
+        assertEquals(399,com.GetBudget());
+        assertEquals(false,com.gameData.field[3][5].hasOwner());
+        assertEquals(false,com.gameData.field[1][3].hasOwner());
+        P4.city_crew = com.gameData.field[1][3];
+        assertEquals(-80,com.GetDeposit());        //เงินฝากของRegionที่ไม่มีเจ้าของ
+        com.invest(1);
+        assertEquals(true,com.gameData.field[1][3].hasOwner());
+        assertEquals(81,com.GetDeposit());
     }
 }
