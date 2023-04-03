@@ -6,25 +6,71 @@ package com.GAME.UPBEAT;//
 import com.GAME.UPBEAT.AST.EvalError;
 import com.GAME.UPBEAT.AST.Variable_Storage;
 import com.GAME.UPBEAT.AST.ASTStatement.PlanAST;
-import com.GAME.UPBEAT.GameProgress.GameState;
-import com.GAME.UPBEAT.GameProgress.FileReader;
-import com.GAME.UPBEAT.GameProgress.GameData;
-import com.GAME.UPBEAT.GameProgress.Parser;
-import com.GAME.UPBEAT.GameProgress.Player;
-import com.GAME.UPBEAT.GameProgress.SyntaxError;
-import com.GAME.UPBEAT.GameProgress.Tokenizer;
+import com.GAME.UPBEAT.GameProgress.*;
+
+import java.util.LinkedList;
 
 public class main {
 
-    public static void main(String[] args) throws SyntaxError, EvalError {
-        System.out.println("lol");
-        e();
-//        g();
-//        c();
-//        a();
+    public static void  printPlayer(Player P,long num){
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("Player "+num+"        Turn : "+P.Turn+ "        Name : "+P.name+"        Budget : "+P.budget+ "        City center : ("+(P.city_center.row()+1)+","+(P.city_center.col()+1)+") "+P.city_center.deposit+"        City crew : ("+(P.city_crew.row()+1)+","+(P.city_crew.col()+1)+")");
+        System.out.println("All of own Region :");
+        int i = 0;
+        for(Region key : P.OwnRegion){
+            if(i%4!=0||i==0)
+                System.out.print("("+(key.row()+1)+","+(key.col()+1)+") -> "+ key.deposit+"        ");
+            else{
+                System.out.println("("+(key.row()+1)+","+(key.col()+1)+") -> "+ key.deposit+"        ");
+            }
+            i++;
+        }
+        System.out.println("\n"+"----------------------------------------------------------------------------------------------------------------");
     }
 
-    public static void g() {
+    public static void main(String[] args) throws SyntaxError, EvalError {
+        GameState game = GameState.instance();
+        game.GameStaring();
+        game.gameData.AddPlayer(3, new String[]{"Nu", "Fifa", "bogey"});
+        PlanAST Nu = FileReader.Instance().ParsingPlayerFile("C:\\Users\\nunu1\\OneDrive\\Desktop\\study\\OOP\\OOP-Group24-Upbeat\\src\\main\\java\\com\\GAME\\UPBEAT\\Test.txt");
+        PlanAST Done = FileReader.Instance().ParsingPlayerFile("C:\\Users\\nunu1\\OneDrive\\Desktop\\study\\OOP\\OOP-Group24-Upbeat\\src\\main\\java\\com\\GAME\\UPBEAT\\SemiTest.txt");
+
+        Player P1 = game.gameData.ListOfPlayer[0];
+        Player P2 = game.gameData.ListOfPlayer[1];
+        Player P3 = game.gameData.ListOfPlayer[2];
+
+        printPlayer(P1,1);
+        printPlayer(P2,2);
+        printPlayer(P3,3);
+
+        for (int i=0 ; i<5 ; i++){
+            Nu.eval(false);
+            printPlayer(P1,1);
+            Nu.eval(false);
+            printPlayer(P2,2);
+            Nu.eval(false);
+            printPlayer(P3,3);
+        }
+
+        System.out.println("\n\n\n\n\n");
+
+        for (int i=0 ; i<3 ; i++){
+            Done.eval(false);
+            printPlayer(P1,1);
+            Nu.eval(false);
+            printPlayer(P2,2);
+            Nu.eval(false);
+            printPlayer(P3,3);
+        }
+
+
+        System.out.println(P1.OwnRegion.toString());
+        Nu.eval(false);
+
+        System.out.println(P1.OwnRegion);
+    }
+
+    public static void g() throws SyntaxError {
         GameState test = GameState.instance();
         test.gameData = new GameData(20L, 20L, 1000000L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L);
         test.gameData.AddPlayer(1L, new String[]{"nu"});
