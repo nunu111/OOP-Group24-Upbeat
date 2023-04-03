@@ -3,7 +3,7 @@ package com.GAME.UPBEAT.GameProgress;
 public class Region {
     private final long row;
     private final long col;
-    protected double deposit;
+    public double deposit;
     protected Player owner;
     protected Region[] PartnerRegion;
     public Region(long _row,long _col){

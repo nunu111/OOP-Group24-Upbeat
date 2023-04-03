@@ -3,6 +3,7 @@ package com.GAME.UPBEAT.Server.ReceiveMessage;
 import com.GAME.UPBEAT.GameProgress.GameState;
 import com.GAME.UPBEAT.GameProgress.Player;
 import com.GAME.UPBEAT.GameProgress.Region;
+import com.GAME.UPBEAT.Server.SendMessage.CurrentPlayerStatus;
 import com.GAME.UPBEAT.Server.SendMessage.HexagonGridRegion;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class CurrentRegion {
     LinkedList<long[]> rowcol = new LinkedList<>();
 
     public LinkedList<long[]> GetOwned(){
+        if(game.gameData.ListOfPlayer == null) return rowcol;
         rowcol = new LinkedList<>();
         Player CurrPlayer = game.gameData.ListOfPlayer[game.gameData.cur_player];
         for (Region stackR : CurrPlayer.OwnRegion) {

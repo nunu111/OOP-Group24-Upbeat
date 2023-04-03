@@ -8,10 +8,10 @@ import java.util.Set;
 public class Player {
     public String name;
     public double budget;
-    protected Region city_center;
+    public Region city_center;
     public Region city_crew;
     public boolean lose;
-    protected long Turn;
+    public long Turn;
     public final Set<Region> OwnRegion ;
     public long init_plan_min;
     public long init_plan_sec;
@@ -20,7 +20,6 @@ public class Player {
     public String code;
     public PlanAST OldPlan;
     public Player(String name, long budget, Region city_center, Region city_crew,long init_plan_min,long init_plan_sec,long plan_rev_min,long plan_rev_sec)  {
-        System.out.println(budget);
         this.name = name;
         this.budget = budget;
         this.city_center = city_center;

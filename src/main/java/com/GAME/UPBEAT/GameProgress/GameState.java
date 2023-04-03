@@ -157,7 +157,6 @@ public class GameState implements AllCommand {
         Region CityCrew = CurrentPlayer.city_crew;
         Region CityCenter = CurrentPlayer.city_center;
         long distance = ShortestPathUnweighted.findShortest().shortestPath(CityCenter,CityCrew);
-        System.out.println(distance);
         if(distance != -1) {
             long travelValue = 5*distance+10;
             if( CityCrew.hasOwner() && CityCrew.owner.equals(CurrentPlayer) && CurrentPlayer.budget >= travelValue){
